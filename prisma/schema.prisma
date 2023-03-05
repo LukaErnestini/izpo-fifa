@@ -30,7 +30,7 @@ model Team {
   id      Int      @id @default(autoincrement())
   name    String?
   players Player[]
-  games   Game[]
+  games Game[]
 }
 
 model Gameday {
@@ -44,4 +44,5 @@ model Goal {
   Game     Game? @relation(fields: [gameId], references: [id])
   gameId   Int?
   distance Int?
+  penalty Boolean?
 }
