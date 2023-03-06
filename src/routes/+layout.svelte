@@ -11,6 +11,7 @@
 	<a href="/" class="btn btn-ghost normal-case text-xl">Home</a>
 	<a href="/questions" class="btn btn-ghost normal-case text-xl">Charts</a>
 	<a href="/players" class="btn btn-ghost normal-case text-xl">Players</a>
+	<a href="/teams" class="btn btn-ghost normal-case text-xl">Teams</a>
 </div>
 
 <slot />
