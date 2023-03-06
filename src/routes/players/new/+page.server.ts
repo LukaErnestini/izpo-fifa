@@ -26,6 +26,45 @@ export const actions = {
 				}
 			});
 			// console.log(player);
+
+			const players = await prisma.player.findMany();
+			if (players.length < 2) {
+				throw 'less than 2';
+			}
+			for (let i = 0; i < players.length; i++) {
+				for (let j = i + 1; j < players.length; j++) {
+					//   teams.push([players[i], players[j]]);
+					prisma.team
+						.findFirst({
+							where: {
+								AND: [
+									{ players: { some: { id: players[i].id } } },
+									{ players: { some: { id: players[j].id } } }
+								]
+							}
+						})
+						.then((team) => {
+							// console.log(team);
+							if (team) {
+								throw 'Team already exists.';
+							}
+							return prisma.team.create({
+								data: {
+									players: {
+										connect: [{ id: players[i].id }, { id: players[j].id }]
+									}
+								},
+								include: { players: true }
+							});
+						})
+						.then((result) => {
+							// console.log(result);
+						})
+						.catch((err) => {
+							// console.log(err);
+						});
+				}
+			}
 		} catch (error) {
 			console.log(error);
 		}

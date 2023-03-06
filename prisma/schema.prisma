@@ -11,10 +11,9 @@ datasource db {
 }
 
 model Player {
-  id     Int    @id @default(autoincrement())
-  name   String @unique
-  Team   Team?  @relation(fields: [teamId], references: [id])
-  teamId Int?
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  teams Team[]
 }
 
 model Game {
@@ -30,7 +29,7 @@ model Team {
   id      Int      @id @default(autoincrement())
   name    String?
   players Player[]
-  games Game[]
+  games   Game[]
 }
 
 model Gameday {
@@ -39,10 +38,10 @@ model Gameday {
 }
 
 model Goal {
-  id       Int   @id @default(autoincrement())
+  id       Int      @id @default(autoincrement())
   time     Int?
-  Game     Game? @relation(fields: [gameId], references: [id])
+  Game     Game?    @relation(fields: [gameId], references: [id])
   gameId   Int?
   distance Int?
-  penalty Boolean?
+  penalty  Boolean?
 }
