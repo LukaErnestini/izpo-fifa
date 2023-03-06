@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	console.log(data);
+	// console.log(data);
 </script>
 
 <a class="btn" href="/players/new">NEW PLAYER</a>

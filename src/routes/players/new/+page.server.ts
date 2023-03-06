@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server/db';
-import { redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 
 export const load = (async () => {
 	return {};
@@ -13,17 +13,22 @@ export const actions = {
 		// console.log(name);
 		// console.log('Hello from page.server.ts');
 		// console.log(await prisma.player.count());
-
-		const player = await prisma.player.create({
-			data: {
-				name
+		try {
+			const existing = await prisma.player.findFirst({ where: { name } });
+			if (existing) {
+				console.log('User exists');
+				return fail(400, { name, exists: true });
 			}
-		});
 
-		// console.log(player);
-
+			const player = await prisma.player.create({
+				data: {
+					name
+				}
+			});
+			// console.log(player);
+		} catch (error) {
+			console.log(error);
+		}
 		throw redirect(303, '/players');
-
-		return { success: true };
 	}
 } satisfies Actions;
