@@ -1,5 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server/db';
+import { redirect } from '@sveltejs/kit';
 
 export const load = (async () => {
 	return {};
@@ -19,6 +20,10 @@ export const actions = {
 			}
 		});
 
-		console.log(player);
+		// console.log(player);
+
+		throw redirect(303, '/players');
+
+		return { success: true };
 	}
 } satisfies Actions;
