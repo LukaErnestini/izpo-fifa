@@ -28,6 +28,7 @@ model Game {
 model Team {
   id      Int      @id @default(autoincrement())
   name    String?
+  color   String?
   players Player[]
   games   Game[]
 }
