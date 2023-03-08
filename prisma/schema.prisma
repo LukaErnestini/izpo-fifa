@@ -35,6 +35,8 @@ model Team {
 
 model Gameday {
   id    Int    @id @default(autoincrement())
+  active Boolean @default(true)
+  createdAt DateTime @default(now())
   games Game[]
 }
 
