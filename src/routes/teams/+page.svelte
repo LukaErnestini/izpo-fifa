@@ -5,5 +5,7 @@
 </script>
 
 {#each data.teams as team, i}
-	<div><a href="/teams/{team.id}">Team {i}: {team.name}</a></div>
+	<div style="background-color: {team.color};">
+		<a class="bg-primary-content" href="/teams/{team.id}">Team {i}: {team.name}</a>
+	</div>
 {/each}

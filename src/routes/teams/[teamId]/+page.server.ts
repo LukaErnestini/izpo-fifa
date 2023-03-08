@@ -1,4 +1,5 @@
 import { prisma } from '$lib/server/db';
+import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load = (async ({ params }) => {
@@ -13,7 +14,7 @@ export const actions = {
 		const name = data.get('name') as string;
 		const color = data.get('color') as string;
 		const id = data.get('id') as string;
-		console.log(name, color, id);
+		// console.log(name, color, id);
 
 		const team = await prisma.team.update({
 			where: { id: +id },
@@ -22,4 +23,17 @@ export const actions = {
 
 		return { team };
 	}
+
+	// delete: async ({ request }) => {
+	// 	const data = await request.formData();
+	// 	const id = data.get('id') as string;
+
+	// 	try {
+	// 		const team = await prisma.team.delete({ where: { id: +id } });
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+
+	// 	throw redirect(303, '/teams');
+	// }
 } satisfies Actions;

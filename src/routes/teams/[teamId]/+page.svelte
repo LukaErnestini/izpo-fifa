@@ -30,4 +30,5 @@
 	<input type="hidden" name="id" value={id} />
 
 	<button class="btn btn-outline" type="submit">SAVE</button>
+	<!-- <button class="btn btn-outline" formaction="?/delete" /> -->
 </form>
