@@ -8,16 +8,7 @@
 	export let form: ActionData;
 	let gameday: Gameday = form?.gameday || data.gameday;
 	let games = data.games;
-	// $: if (!gameday) console.log('no gd');
-
-	// async function createGD() {
-	// 	const response = await fetch('api/gameday');
-	// 	if (response.status !== 200) {
-	// 		return;
-	// 	}
-	// 	gameday = await response.json();
-	// 	console.log(gameday);
-	// }
+	let activeGame = data.activeGame;
 </script>
 
 <div class="navbar bg-base-100">
@@ -54,5 +45,5 @@
 </div>
 
 {#if gameday}
-	<GameControl {games} />
+	<GameControl {games} {activeGame} />
 {/if}
