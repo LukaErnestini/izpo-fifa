@@ -11,18 +11,23 @@ datasource db {
 }
 
 model Player {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  teams Team[]
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  teams   Team[]
+  shots   Attempt[] @relation("playerShots")
+  assists Attempt[] @relation("playerAssists")
+  goalie  Attempt[] @relation("playerAsGoalie")
 }
 
 model Game {
-  id        Int      @id @default(autoincrement())
-  date      DateTime
-  goals     Goal[]
-  Gameday   Gameday? @relation(fields: [gamedayId], references: [id])
+  id        Int       @id @default(autoincrement())
+  date      DateTime  @default(now())
+  attempts  Attempt[]
+  Gameday   Gameday?  @relation(fields: [gamedayId], references: [id])
   gamedayId Int?
-  teams     Team[]
+  teams     Team[]    @relation("teamsInGame")
+  winnerId  Int?
+  finished  Boolean   @default(false)
 }
 
 model Team {
@@ -30,21 +35,29 @@ model Team {
   name    String?
   color   String?
   players Player[]
-  games   Game[]
+  games   Game[]   @relation("teamsInGame")
 }
 
 model Gameday {
-  id    Int    @id @default(autoincrement())
-  active Boolean @default(true)
+  id        Int      @id @default(autoincrement())
+  active    Boolean  @default(true)
   createdAt DateTime @default(now())
-  games Game[]
+  games     Game[]
 }
 
-model Goal {
-  id       Int      @id @default(autoincrement())
-  time     Int?
-  Game     Game?    @relation(fields: [gameId], references: [id])
-  gameId   Int?
-  distance Int?
-  penalty  Boolean?
+model Attempt {
+  id         Int     @id @default(autoincrement())
+  time       Int?
+  distance   Int?
+  goal       Boolean @default(false)
+  penalty    Boolean @default(false)
+  onTarget   Boolean @default(false)
+  shooter    Player  @relation("playerShots", fields: [shooterId], references: [id])
+  shooterId  Int
+  Game       Game?   @relation(fields: [gameId], references: [id])
+  gameId     Int?
+  assisted   Player? @relation("playerAssists", fields: [assisteeId], references: [id])
+  assisteeId Int?
+  goalie     Player? @relation("playerAsGoalie", fields: [goalieId], references: [id])
+  goalieId   Int?
 }
