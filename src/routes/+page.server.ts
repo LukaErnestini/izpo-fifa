@@ -4,12 +4,6 @@ import type { Actions } from './$types';
 export const actions = {
 	create: async ({ request }) => {
 		try {
-			// const gameday = await prisma.gameday.create({
-			// 	data: {
-			// 		active: true
-			// 	}
-			// });
-			// return { gameday };
 			const data = await request.formData();
 			const players = await data.getAll('players[]');
 			console.log(players);

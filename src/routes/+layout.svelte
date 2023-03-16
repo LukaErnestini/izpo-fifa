@@ -1,17 +1,32 @@
 <script lang="ts">
 	import '../app.css';
-	let title = 'Some Title';
+	import Icon from '@iconify/svelte';
+	import type { PageData } from './$types';
+	import { afterUpdate, onMount } from 'svelte';
+	// import { page } from '$app/stores';
+	// let pathname = $page.url.pathname;
+	// console.log($page.route);
+	// export let data: PageData;
+	afterUpdate(() => {
+		pathname = window.location.pathname;
+	});
+	let pathname: string;
 </script>
 
 <svelte:head>
-	<title>{title}</title>
+	<title>{'title'}</title>
 </svelte:head>
 
-<div class="navbar bg-base-300">
-	<a href="/" class="btn btn-ghost normal-case text-xl">Home</a>
-	<a href="/questions" class="btn btn-ghost normal-case text-xl">Charts</a>
-	<a href="/players" class="btn btn-ghost normal-case text-xl">Players</a>
-	<a href="/teams" class="btn btn-ghost normal-case text-xl">Teams</a>
-</div>
-
 <slot />
+
+<div class="btm-nav">
+	<a href="/" class:active={pathname === '/'}>
+		<Icon icon="mdi:soccer-field" width="32" />
+	</a>
+	<a href="/stats" class:active={pathname === '/stats'}>
+		<Icon icon="material-symbols:bar-chart" width="32" />
+	</a>
+	<a href="/settings" class:active={pathname === '/settings'}>
+		<Icon icon="mdi:cog" width="32" />
+	</a>
+</div>
