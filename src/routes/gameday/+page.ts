@@ -8,8 +8,8 @@ export const load = (async ({ fetch }) => {
 		const players = await response.json();
 		return { players };
 	}
-	const gameday = await res.json();
-	// console.log(res);
+	const { gameday, games } = await res.json();
+	// console.log(gameday, games);
 
-	return { gameday };
+	return { gameday, games };
 }) satisfies PageLoad;

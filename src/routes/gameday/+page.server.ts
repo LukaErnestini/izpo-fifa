@@ -1,12 +1,16 @@
 import { prisma } from '$lib/server/db';
+import type { Game } from '@prisma/client';
 import type { Actions } from './$types';
 
 export const actions = {
 	create: async ({ request }) => {
 		try {
-			const data = await request.formData();
-			const players = await data.getAll('players[]');
-			console.log(players);
+			// const data = await request.formData();
+			// const players = await data.getAll('players[]');
+			// console.log(players);
+			const gameday = await prisma.gameday.create({ data: {} });
+			const games: Game[] = [];
+			return { gameday, games };
 		} catch (error) {
 			console.log(error);
 		}
@@ -22,7 +26,7 @@ export const actions = {
 					active: false
 				}
 			});
-			return { gameday };
+			return {};
 		} catch (error) {
 			console.log(error);
 		}

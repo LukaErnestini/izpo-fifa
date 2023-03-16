@@ -6,5 +6,8 @@ export const GET: RequestHandler = async () => {
 	if (!gameday) {
 		return new Response('Not found', { status: 404 });
 	}
-	return new Response(JSON.stringify(gameday));
+	const games = await prisma.game.findMany({ where: { Gameday: gameday } });
+	// console.log('Games: ', games);
+	const response = { gameday, games };
+	return new Response(JSON.stringify(response));
 };
