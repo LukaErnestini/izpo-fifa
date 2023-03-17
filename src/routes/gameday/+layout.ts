@@ -8,8 +8,8 @@ export const load = (async ({ fetch }) => {
 		const players = await response.json();
 		return { players };
 	}
-	const { gameday, games, activeGame } = await res.json();
+	const { gameday, games, activeGame, players } = await res.json();
 	// console.log(gameday, games);
 
-	return { gameday, games, activeGame };
+	return { gameday, games, activeGame, players };
 }) satisfies LayoutLoad;

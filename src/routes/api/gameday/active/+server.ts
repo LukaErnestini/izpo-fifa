@@ -14,9 +14,13 @@ export const GET: RequestHandler = async () => {
 				finished: false,
 				Gameday: gameday
 			}
+		},
+		include: {
+			teams: { include: { players: true } }
 		}
 	});
+	const players = await prisma.player.findMany();
 	// console.log('Games: ', games);
-	const response = { gameday, games, activeGame };
+	const response = { gameday, games, activeGame, players };
 	return new Response(JSON.stringify(response));
 };

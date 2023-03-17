@@ -8,8 +8,9 @@
 	let gameday: Gameday = form?.gameday || data.gameday;
 	let games = data.games;
 	let activeGame = data.activeGame;
+	let players = data.players;
 </script>
 
 {#if gameday}
-	<GameControl {games} {activeGame} />
+	<GameControl {games} {activeGame} {players} />
 {/if}

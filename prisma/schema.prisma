@@ -54,10 +54,10 @@ model Attempt {
   onTarget   Boolean @default(false)
   shooter    Player  @relation("playerShots", fields: [shooterId], references: [id])
   shooterId  Int
-  Game       Game?   @relation(fields: [gameId], references: [id])
-  gameId     Int?
-  assisted   Player? @relation("playerAssists", fields: [assisteeId], references: [id])
-  assisteeId Int?
+  Game       Game   @relation(fields: [gameId], references: [id])
+  gameId     Int
+  assisted   Player? @relation("playerAssists", fields: [assistedId], references: [id])
+  assistedId Int?
   goalie     Player? @relation("playerAsGoalie", fields: [goalieId], references: [id])
   goalieId   Int?
 }

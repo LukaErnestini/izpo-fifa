@@ -6,11 +6,19 @@
 	export let data: LayoutData;
 	export let form: ActionData;
 	let gameday: Gameday = form?.gameday || data.gameday;
+	let games = data.games;
+	let activeGame = data.activeGame;
 </script>
 
 <div class="navbar bg-base-100">
 	<div class="flex-1">
-		<p class="btn btn-ghost normal-case text-xl">Game Day</p>
+		<span class="btn btn-ghost normal-case text-xl">
+			<p>Game Day</p>
+			{#if activeGame}
+				<p class="ml-2">-</p>
+				<p class="ml-2">Game {games.length}</p>
+			{/if}
+		</span>
 	</div>
 	<div class="flex-none">
 		<div class="dropdown dropdown-end">
@@ -42,3 +50,9 @@
 </div>
 
 <slot><!-- optional fallback --></slot>
+
+<style>
+	p {
+		display: inline;
+	}
+</style>
