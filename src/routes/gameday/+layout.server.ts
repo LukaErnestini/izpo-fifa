@@ -18,8 +18,10 @@ export const load = (async () => {
 			}
 		},
 		include: {
-			teams: { include: { players: true } }
+			teams: { include: { players: true } },
+			attempts: { orderBy: { id: 'desc' } }
 		}
 	});
+	// console.log(activeGame?.attempts.length);
 	return { gameday, activeGame };
 }) satisfies LayoutServerLoad;

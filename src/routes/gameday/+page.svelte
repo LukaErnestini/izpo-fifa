@@ -7,11 +7,16 @@
 	export let data: PageData;
 	export let form: ActionData;
 	let gameday = form?.gameday || data.gameday;
-	let activeGame = data.activeGame;
 </script>
 
 {#if gameday}
-	<GameControl gameDayId={gameday.id} {activeGame} players={data.gameday?.players} />
+	<GameControl
+		time={form?.attempt?.time}
+		attempts={data.activeGame?.attempts}
+		gameDayId={gameday.id}
+		activeGame={data.activeGame}
+		players={data.gameday?.players}
+	/>
 {:else}
 	<CreateGd players={data.players} />
 {/if}

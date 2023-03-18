@@ -18,6 +18,9 @@
 
 <slot />
 
+<div class="w-full h-16">
+	<!-- spacer, because of bottom navigation -->
+</div>
 <div class="btm-nav">
 	<a href="/gameday" class:active={pathname === 'gameday'}>
 		<Icon icon="mdi:soccer-field" width="32" />

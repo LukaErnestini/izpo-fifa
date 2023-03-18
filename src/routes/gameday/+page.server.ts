@@ -92,7 +92,7 @@ export const actions = {
 					Game: { connect: { id: gameId } }
 				}
 			});
-			return { attempt, time };
+			return { attempt };
 		} catch (error) {
 			console.log(error);
 		}
@@ -113,6 +113,15 @@ export const actions = {
 				data: { finished: true }
 			});
 			return { game };
+		} catch (error) {
+			console.log(error);
+		}
+	},
+	removeLog: async ({ request }) => {
+		try {
+			const data = await request.formData();
+			const id = +(data.get('id') as string);
+			await prisma.attempt.delete({ where: { id } });
 		} catch (error) {
 			console.log(error);
 		}

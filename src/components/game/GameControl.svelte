@@ -1,12 +1,15 @@
 <script lang="ts">
 	import type { GamePopulated } from '$lib/types/types';
-	import type { Game, Player, Team } from '@prisma/client';
+	import type { Attempt, Player } from '@prisma/client';
 	import AttemptsForm from './AttemptsForm.svelte';
+	import AttemptsLog from './AttemptsLog.svelte';
 	import CreateGame from './CreateGame.svelte';
 
 	export let gameDayId: number;
 	export let activeGame: GamePopulated;
 	export let players: Player[] = [];
+	export let attempts: Attempt[] = [];
+	export let time: number | null | undefined;
 </script>
 
 {#if !activeGame}
@@ -18,5 +21,6 @@
 		</div>
 	</form>
 {:else}
-	<AttemptsForm {activeGame} />
+	<AttemptsForm {activeGame} {time} />
+	<AttemptsLog {attempts} />
 {/if}

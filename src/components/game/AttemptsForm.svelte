@@ -1,15 +1,17 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import type { GamePopulated } from '$lib/types/types';
-	import type { Game, Player } from '@prisma/client';
+	import type { Player } from '@prisma/client';
 
 	export let activeGame: GamePopulated;
+	export let time: number | null | undefined;
 	let gamePlayers: Player[] = [];
 	if (activeGame) {
 		gamePlayers = [...activeGame.teams[0].players, ...activeGame.teams[1].players];
 	}
 </script>
 
-<form action="?/attempt" method="post">
+<form action="?/attempt" method="post" use:enhance>
 	<div class="form-control m-4">
 		<label class="label cursor-pointer">
 			<span class="label-text">Goal</span>
@@ -25,7 +27,7 @@
 		</label>
 		<label class="label cursor-pointer">
 			<span class="label-text">Time</span>
-			<input type="number" name="time" class="input input-bordered input-sm w-24" />
+			<input type="number" value={time} name="time" class="input input-bordered input-sm w-24" />
 		</label>
 		<label class="label cursor-pointer">
 			<span class="label-text">Distance</span>
@@ -51,7 +53,7 @@
 		<label class="label">
 			<span class="label-text">Goalie</span>
 			<select class="select">
-				<option value="">Noone</option>
+				<option value="">AI</option>
 				{#each gamePlayers as player}
 					<option value={player.id}>{player.name}</option>
 				{/each}
