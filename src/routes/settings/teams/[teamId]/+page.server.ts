@@ -21,7 +21,7 @@ export const actions = {
 			data: { color, name }
 		});
 
-		return { team };
+		throw redirect(303, '/settings/teams');
 	}
 
 	// delete: async ({ request }) => {

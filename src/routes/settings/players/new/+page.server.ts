@@ -1,6 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server/db';
 import { fail, redirect } from '@sveltejs/kit';
+import { connect } from 'http2';
 
 export const load = (async () => {
 	return {};
@@ -10,60 +11,36 @@ export const actions = {
 	default: async ({ request }) => {
 		const data = await request.formData();
 		const name = data.get('name')?.toString() as string;
-		// console.log(name);
-		// console.log('Hello from page.server.ts');
-		// console.log(await prisma.player.count());
 		try {
 			const existing = await prisma.player.findFirst({ where: { name } });
 			if (existing) {
 				console.log('User exists');
-				return fail(400, { name, exists: true });
+				return fail(409, { message: 'Player by that name alaready exists' });
 			}
-
-			const player = await prisma.player.create({
+			const players = await prisma.player.findMany();
+			const newPlayer = await prisma.player.create({
 				data: {
 					name
 				}
 			});
-			// console.log(player);
-
-			const players = await prisma.player.findMany();
-			if (players.length < 2) {
-				throw 'less than 2';
-			}
+			const genRanHex = (size: number) =>
+				[...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+			prisma.team
+				.create({
+					data: { color: '#' + genRanHex(6), players: { connect: [{ id: newPlayer.id }] } }
+				})
+				.then();
 			for (let i = 0; i < players.length; i++) {
-				for (let j = i + 1; j < players.length; j++) {
-					//   teams.push([players[i], players[j]]);
-					prisma.team
-						.findFirst({
-							where: {
-								AND: [
-									{ players: { some: { id: players[i].id } } },
-									{ players: { some: { id: players[j].id } } }
-								]
+				prisma.team
+					.create({
+						data: {
+							color: '#' + genRanHex(6),
+							players: {
+								connect: [{ id: players[i].id }, { id: newPlayer.id }]
 							}
-						})
-						.then((team) => {
-							// console.log(team);
-							if (team) {
-								throw 'Team already exists.';
-							}
-							return prisma.team.create({
-								data: {
-									players: {
-										connect: [{ id: players[i].id }, { id: players[j].id }]
-									}
-								},
-								include: { players: true }
-							});
-						})
-						.then((result) => {
-							// console.log(result);
-						})
-						.catch((err) => {
-							// console.log(err);
-						});
-				}
+						}
+					})
+					.then();
 			}
 		} catch (error) {
 			console.log(error);

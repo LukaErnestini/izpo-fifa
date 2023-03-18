@@ -36,6 +36,6 @@ export const actions = {
 			console.log(error);
 		}
 
-		throw redirect(303, '/players');
+		throw redirect(303, '/settings/players');
 	}
 } satisfies Actions;
