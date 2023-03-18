@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Player } from '@prisma/client';
 
+	export let gameDayId: number;
 	export let players: Player[];
 	const team1 = players.map((player) => {
 		return { ...player, selected: false, hidden: false };
@@ -60,6 +61,10 @@
 		</div>
 	</div>
 	<div class="flex w-full justify-center">
-		<button class="btn btn-wide m-4">Create</button>
+		<button class="btn btn-wide m-4">Start Game</button>
+	</div>
+	<div class="flex w-full justify-center">
+		<input type="hidden" name="id" value={gameDayId} />
+		<button formaction="?/end" class="btn btn-wide btn-warning m-4">End Gameday</button>
 	</div>
 </form>

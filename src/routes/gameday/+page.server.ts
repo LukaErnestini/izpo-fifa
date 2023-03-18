@@ -6,14 +6,18 @@ import type { Actions } from './$types';
 export const actions = {
 	create: async ({ request }) => {
 		try {
-			// const data = await request.formData();
-			// const players = await data.getAll('players[]');
+			const data = await request.formData();
+			const players = await data.getAll('players[]').map((id) => {
+				return { id: +id };
+			});
 			// console.log(players);
 			const activeGameday = await prisma.gameday.findFirst({ where: { active: true } });
 			if (activeGameday) {
 				throw error(409, 'Active gameday already exists. Finish it first.');
 			}
-			const gameday = await prisma.gameday.create({ data: {} });
+			const gameday = await prisma.gameday.create({
+				data: { players: { connect: players } }
+			});
 			return { gameday };
 		} catch (error) {
 			console.log(error);
@@ -50,9 +54,12 @@ export const actions = {
 			const team2 = await prisma.team.findFirst({
 				where: { players: { every: { id: { in: team2players } } } }
 			});
-			const { gameday } = await (await fetch('/api/gameday/active')).json();
+			const gameday = await prisma.gameday.findFirst({ where: { active: true } });
 			const game = await prisma.game.create({
-				data: { gamedayId: gameday.id, teams: { connect: [{ id: team1?.id }, { id: team2?.id }] } },
+				data: {
+					gamedayId: gameday?.id,
+					teams: { connect: [{ id: team1?.id }, { id: team2?.id }] }
+				},
 				include: { teams: true }
 			});
 			return { game };
@@ -85,9 +92,7 @@ export const actions = {
 					Game: { connect: { id: gameId } }
 				}
 			});
-
-			console.log(attempt);
-			return {};
+			return { attempt, time };
 		} catch (error) {
 			console.log(error);
 		}

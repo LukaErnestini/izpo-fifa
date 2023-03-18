@@ -11,12 +11,13 @@ datasource db {
 }
 
 model Player {
-  id      Int       @id @default(autoincrement())
-  name    String    @unique
-  teams   Team[]
-  shots   Attempt[] @relation("playerShots")
-  assists Attempt[] @relation("playerAssists")
-  goalie  Attempt[] @relation("playerAsGoalie")
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  teams    Team[]
+  shots    Attempt[] @relation("playerShots")
+  assists  Attempt[] @relation("playerAssists")
+  goalie   Attempt[] @relation("playerAsGoalie")
+  gamedays Gameday[]
 }
 
 model Game {
@@ -43,6 +44,7 @@ model Gameday {
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
   games     Game[]
+  players   Player[]
 }
 
 model Attempt {
@@ -54,7 +56,7 @@ model Attempt {
   onTarget   Boolean @default(false)
   shooter    Player  @relation("playerShots", fields: [shooterId], references: [id])
   shooterId  Int
-  Game       Game   @relation(fields: [gameId], references: [id])
+  Game       Game    @relation(fields: [gameId], references: [id])
   gameId     Int
   assisted   Player? @relation("playerAssists", fields: [assistedId], references: [id])
   assistedId Int?

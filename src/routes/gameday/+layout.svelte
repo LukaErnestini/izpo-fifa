@@ -5,8 +5,7 @@
 
 	export let data: LayoutData;
 	export let form: ActionData;
-	let gameday: Gameday = form?.gameday || data.gameday;
-	let games = data.games;
+	let games = data.gameday?.games;
 	let activeGame = data.activeGame;
 </script>
 
@@ -16,36 +15,9 @@
 			<p>Game Day</p>
 			{#if activeGame}
 				<p class="ml-2">-</p>
-				<p class="ml-2">Game {games.length}</p>
+				<p class="ml-2">Game {games?.length}</p>
 			{/if}
 		</span>
-	</div>
-	<div class="flex-none">
-		<div class="dropdown dropdown-end">
-			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<label tabindex="0">
-				<Icon icon="material-symbols:menu" width="32" />
-			</label>
-
-			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-			<ul tabindex="0" class="dropdown-content menu shadow bg-base-100 rounded-box w-52">
-				{#if !gameday}
-					<li>
-						<form action="?/create" method="post">
-							<button class="font-semibold text-success">CREATE GAMEDAY</button>
-						</form>
-					</li>
-				{:else}
-					<li>
-						<form action="?/end" method="post">
-							<input type="hidden" name="id" value={gameday.id} />
-							<button class="font-semibold text-error">FINISH GAMEDAY</button>
-						</form>
-					</li>
-				{/if}
-			</ul>
-		</div>
 	</div>
 </div>
 

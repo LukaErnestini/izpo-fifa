@@ -1,8 +1,8 @@
 <script lang="ts">
+	import type { GamePopulated } from '$lib/types/types';
 	import type { Game, Player } from '@prisma/client';
 
-	export let players: Player[];
-	export let activeGame: Game;
+	export let activeGame: GamePopulated;
 	let gamePlayers: Player[] = [];
 	if (activeGame) {
 		gamePlayers = [...activeGame.teams[0].players, ...activeGame.teams[1].players];
@@ -57,7 +57,7 @@
 				{/each}
 			</select>
 		</label>
-		<input type="hidden" name="gameId" value={activeGame.id} />
+		<input type="hidden" name="gameId" value={activeGame?.id} />
 		<div class="flex w-full justify-center">
 			<button class="btn btn-wide m-4">Submit Attempt</button>
 		</div>
