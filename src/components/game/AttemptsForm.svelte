@@ -9,6 +9,12 @@
 	if (activeGame) {
 		gamePlayers = [...activeGame.teams[0].players, ...activeGame.teams[1].players];
 	}
+	function changeTime(n: number) {
+		if (time) time += n;
+		else time = n;
+		if (time < 0) time = 0;
+		else if (time > 130) time = 130;
+	}
 </script>
 
 <form action="?/attempt" method="post" use:enhance>
@@ -27,12 +33,45 @@
 		</label>
 		<label class="label cursor-pointer">
 			<span class="label-text">Time</span>
-			<input type="number" value={time} name="time" class="input input-bordered input-sm w-24" />
+			<div>
+				<button type="button" class="btn btn-xs" on:click={() => changeTime(-5)}>-5</button>
+				<button type="button" class="btn btn-xs" on:click={() => changeTime(-1)}>-1</button>
+				<input
+					type="number"
+					bind:value={time}
+					name="time"
+					class="input input-bordered input-sm w-24"
+					max="130"
+					min="0"
+				/>
+				<button type="button" class="btn btn-xs" on:click={() => changeTime(1)}>+1</button>
+				<button type="button" class="btn btn-xs" on:click={() => changeTime(5)}>+5</button>
+			</div>
 		</label>
-		<label class="label cursor-pointer">
+		<!-- <label class="label cursor-pointer block">
 			<span class="label-text">Distance</span>
-			<input type="number" name="distance" class="input input-bordered input-sm w-24" />
-		</label>
+			<div class="mr-4">
+				<input
+					name="distance"
+					type="range"
+					min="-4"
+					max="31"
+					value="-4"
+					class="range range-xs"
+					step="5"
+				/>
+			</div>
+			<div class="w-full flex justify-between text-xs px-2">
+				<span>null</span>
+				<span>1m</span>
+				<span>6m</span>
+				<span>11m</span>
+				<span>16m</span>
+				<span>21m</span>
+				<span>26m</span>
+				<span>31m+</span>
+			</div>
+		</label> -->
 		<label class="label">
 			<span class="label-text">Shooter</span>
 			<select class="select" name="shooter">
