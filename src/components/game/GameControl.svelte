@@ -10,7 +10,13 @@
 </script>
 
 {#if !activeGame}
-	<CreateGame {gameDayId} {players} />
+	<CreateGame {players} />
+	<form action="?/end" method="post">
+		<div class="flex w-full justify-center">
+			<input type="hidden" name="id" value={gameDayId} />
+			<button formaction="?/end" class="btn btn-wide btn-warning m-4">End Gameday</button>
+		</div>
+	</form>
 {:else}
 	<AttemptsForm {activeGame} />
 {/if}
