@@ -1,10 +1,7 @@
 <script lang="ts">
 	import type { ActionData, LayoutData } from './$types';
-	import type { Gameday } from '@prisma/client';
-	import Icon from '@iconify/svelte';
 
 	export let data: LayoutData;
-	export let form: ActionData;
 	let games = data.gameday?.games;
 	let activeGame = data.activeGame;
 </script>
