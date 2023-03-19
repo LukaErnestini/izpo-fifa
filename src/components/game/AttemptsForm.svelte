@@ -10,6 +10,7 @@
 	let shooter: number | null;
 	let assist: number | null;
 	let goalie: number | null = null;
+	let goal: boolean;
 	if (activeGame) {
 		gamePlayers = [...activeGame.teams[0].players, ...activeGame.teams[1].players];
 	}
@@ -33,11 +34,11 @@
 	<div class="form-control m-4">
 		<label class="label cursor-pointer">
 			<span class="label-text">Goal</span>
-			<input type="checkbox" class="toggle" name="goal" />
+			<input type="checkbox" class="toggle" name="goal" bind:checked={goal} />
 		</label>
 		<label class="label cursor-pointer">
 			<span class="label-text">On Target</span>
-			<input type="checkbox" class="toggle" name="onTarget" />
+			<input type="checkbox" class="toggle" name="onTarget" checked={goal} />
 		</label>
 		<label class="label cursor-pointer">
 			<span class="label-text">Penalty</span>
