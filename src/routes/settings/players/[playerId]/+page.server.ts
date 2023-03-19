@@ -52,21 +52,17 @@ export const actions = {
 					region: 'eu-central-1',
 					credentials: { accessKeyId: env.AWS_AK, secretAccessKey: env.AWS_SK }
 				});
-				const s3url = await s3.getSignedUrlPromise('putObject', {
-					Bucket: env.BUCKET_NAME,
-					Key: filename,
-					Expires: 600,
-					ContentType: file.type
-				});
-				const response = await fetch(s3url, {
-					method: 'PUT',
-					headers: { 'Content-Type': String(file.type) },
-					body: file
-				});
-				const imageUri = await s3.getSignedUrlPromise('getObject', {
-					Bucket: env.BUCKET_NAME,
-					Key: filename
-				});
+				await s3
+					.putObject({
+						Bucket: env.BUCKET_NAME,
+						Key: filename,
+						ACL: 'public-read',
+						ContentType: file.type,
+						Body: Buffer.from(await file.arrayBuffer())
+					})
+					.promise();
+
+				const imageUri = 'https://izpo-fifa.s3.eu-central-1.amazonaws.com/' + filename;
 				await prisma.player.update({ where: { id: +id }, data: { imageUri } });
 			}
 		} catch (error) {
