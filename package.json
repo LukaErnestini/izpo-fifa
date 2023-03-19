@@ -41,6 +41,8 @@
 	"dependencies": {
 		"@prisma/client": "^4.11.0",
 		"@tailwindcss/typography": "^0.5.9",
-		"daisyui": "^2.51.3"
+		"aws-sdk": "^2.1338.0",
+		"daisyui": "^2.51.3",
+		"nanoid": "^4.0.1"
 	}
 }

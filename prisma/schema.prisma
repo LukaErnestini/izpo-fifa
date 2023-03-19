@@ -13,6 +13,7 @@ datasource db {
 model Player {
   id       Int       @id @default(autoincrement())
   name     String    @unique
+  imageUri String?
   teams    Team[]
   shots    Attempt[] @relation("playerShots")
   assists  Attempt[] @relation("playerAssists")

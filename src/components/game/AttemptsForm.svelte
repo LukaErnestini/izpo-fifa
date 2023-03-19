@@ -88,9 +88,9 @@
 		<label class="label">
 			<span class="label-text">Shooter</span>
 			<span class="flex">
-				{#each gamePlayers as { name, id }}
+				{#each gamePlayers as { name, imageUri, id }}
 					<label class="cursor-pointer">
-						<PlayerAvatarSelect {name} selected={id === shooter ? true : false} />
+						<PlayerAvatarSelect {imageUri} {name} selected={id === shooter ? true : false} />
 						<input type="radio" name="shooter" bind:group={shooter} value={id} hidden />
 					</label>
 				{/each}
@@ -99,9 +99,9 @@
 		<label class="label">
 			<span class="label-text">Assisted By</span>
 			<span class="flex">
-				{#each gamePlayers as { name, id }}
+				{#each gamePlayers as { name, imageUri, id }}
 					<label class="cursor-pointer">
-						<PlayerAvatarSelect {name} selected={id === assist ? true : false} />
+						<PlayerAvatarSelect {imageUri} {name} selected={id === assist ? true : false} />
 						<input
 							type="radio"
 							name="assisted"
@@ -121,9 +121,9 @@
 					<PlayerAvatarSelect name="AI" selected={null === goalie ? true : false} />
 					<input type="radio" name="goalie" bind:group={goalie} value={null} hidden />
 				</label>
-				{#each gamePlayers as { name, id }}
+				{#each gamePlayers as { name, imageUri, id }}
 					<label class="cursor-pointer">
-						<PlayerAvatarSelect {name} selected={id === goalie ? true : false} />
+						<PlayerAvatarSelect {imageUri} {name} selected={id === goalie ? true : false} />
 						<input type="radio" name="goalie" bind:group={goalie} value={id} hidden />
 					</label>
 				{/each}
