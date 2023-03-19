@@ -39,7 +39,8 @@ export const actions = {
 			console.log(error);
 		}
 	},
-	createGame: async ({ request, fetch }) => {
+	createGame: async ({ request }) => {
+		// TODO refactor this code, there is some duplication.
 		try {
 			const data = await request.formData();
 			const team1players = data.getAll('team1').map((e) => {
@@ -48,11 +49,23 @@ export const actions = {
 			const team2players = data.getAll('team2').map((e) => {
 				return +e;
 			});
-			const team1 = await prisma.team.findFirst({
-				where: { players: { every: { id: { in: team1players } } } }
+			const teams1 = await prisma.team.findMany({
+				where: { players: { every: { id: { in: team1players } } } },
+				include: { players: true }
 			});
-			const team2 = await prisma.team.findFirst({
-				where: { players: { every: { id: { in: team2players } } } }
+			// The bellow step is necessary because the query returns teams
+			// that contain a subset of the team1players as well
+			// Meaning that single player teams satisfy the condition.
+			// I did not know how to correct the query, so this is the current solution
+			const team1 = teams1.find((team) => {
+				if (team.players.length === team1players.length) return team;
+			});
+			const teams2 = await prisma.team.findMany({
+				where: { players: { every: { id: { in: team2players } } } },
+				include: { players: true }
+			});
+			const team2 = teams2.find((team) => {
+				if (team.players.length === team2players.length) return team;
 			});
 			const gameday = await prisma.gameday.findFirst({ where: { active: true } });
 			const game = await prisma.game.create({
@@ -92,6 +105,7 @@ export const actions = {
 					Game: { connect: { id: gameId } }
 				}
 			});
+			// console.log(attempt);
 			return { attempt };
 		} catch (error) {
 			console.log(error);
