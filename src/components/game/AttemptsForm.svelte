@@ -2,10 +2,14 @@
 	import { enhance } from '$app/forms';
 	import type { GamePopulated } from '$lib/types/types';
 	import type { Player } from '@prisma/client';
+	import PlayerAvatarSelect from './PlayerAvatarSelect.svelte';
 
 	export let activeGame: GamePopulated;
 	export let time: number | null | undefined;
 	let gamePlayers: Player[] = [];
+	let shooter: number | null;
+	let assist: number | null;
+	let goalie: number | null = null;
 	if (activeGame) {
 		gamePlayers = [...activeGame.teams[0].players, ...activeGame.teams[1].players];
 	}
@@ -15,9 +19,17 @@
 		if (time < 0) time = 0;
 		else if (time > 130) time = 130;
 	}
+	function resetForm() {
+		shooter = null;
+		assist = null;
+		goalie = null;
+	}
+	function toggleAssisted(id: number) {
+		if (id === assist) assist = null;
+	}
 </script>
 
-<form action="?/attempt" method="post" use:enhance>
+<form action="?/attempt" method="post" use:enhance on:submit={resetForm}>
 	<div class="form-control m-4">
 		<label class="label cursor-pointer">
 			<span class="label-text">Goal</span>
@@ -72,31 +84,50 @@
 				<span>31m+</span>
 			</div>
 		</label> -->
+		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label class="label">
 			<span class="label-text">Shooter</span>
-			<select class="select" name="shooter">
-				{#each gamePlayers as player}
-					<option value={player.id}>{player.name}</option>
+			<span class="flex">
+				{#each gamePlayers as { name, id }}
+					<label class="cursor-pointer">
+						<PlayerAvatarSelect {name} selected={id === shooter ? true : false} />
+						<input type="radio" name="shooter" bind:group={shooter} value={id} hidden />
+					</label>
 				{/each}
-			</select>
+			</span>
 		</label>
 		<label class="label">
 			<span class="label-text">Assisted By</span>
-			<select class="select" name="assisted">
-				<option value="">Noone</option>
-				{#each gamePlayers as player}
-					<option value={player.id}>{player.name}</option>
+			<span class="flex">
+				{#each gamePlayers as { name, id }}
+					<label class="cursor-pointer">
+						<PlayerAvatarSelect {name} selected={id === assist ? true : false} />
+						<input
+							type="radio"
+							name="assisted"
+							bind:group={assist}
+							value={id}
+							hidden
+							on:click={() => toggleAssisted(id)}
+						/>
+					</label>
 				{/each}
-			</select>
+			</span>
 		</label>
 		<label class="label">
 			<span class="label-text">Goalie</span>
-			<select class="select">
-				<option value="">AI</option>
-				{#each gamePlayers as player}
-					<option value={player.id}>{player.name}</option>
+			<span class="flex">
+				<label class="cursor-pointer">
+					<PlayerAvatarSelect name="AI" selected={null === goalie ? true : false} />
+					<input type="radio" name="goalie" bind:group={goalie} value={null} hidden />
+				</label>
+				{#each gamePlayers as { name, id }}
+					<label class="cursor-pointer">
+						<PlayerAvatarSelect {name} selected={id === goalie ? true : false} />
+						<input type="radio" name="goalie" bind:group={goalie} value={id} hidden />
+					</label>
 				{/each}
-			</select>
+			</span>
 		</label>
 		<input type="hidden" name="gameId" value={activeGame?.id} />
 		<div class="flex w-full justify-center">
