@@ -1,16 +1,20 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { enhance, type SubmitFunction } from '$app/forms';
 	import type { GamePopulated } from '$lib/types/types';
 	import type { Player } from '@prisma/client';
 	import PlayerAvatarSelect from './PlayerAvatarSelect.svelte';
 
 	export let activeGame: GamePopulated;
-	export let time: number | null | undefined;
+	// export let time: number | null | undefined;
 	let gamePlayers: Player[] = [];
 	let shooter: number | null;
 	let assist: number | null;
 	let goalie: number | null = null;
-	let goal: boolean;
+	let goal = false;
+	let penalty = false;
+	let loading = false;
+	let time = 0;
+
 	if (activeGame) {
 		gamePlayers = [...activeGame.teams[0].players, ...activeGame.teams[1].players];
 	}
@@ -20,17 +24,29 @@
 		if (time < 0) time = 0;
 		else if (time > 130) time = 130;
 	}
-	function resetForm() {
-		shooter = null;
-		assist = null;
-		goalie = null;
-	}
+	const addEvent: SubmitFunction = (input) => {
+		// Before form submits
+		loading = true;
+
+		return async ({ update, result }) => {
+			// After form submits
+			shooter = null;
+			assist = null;
+			goalie = null;
+			penalty = false;
+			goal = !goal; // Do this because if goal is false and onTarget toggled ON, onTarget will not switch.
+			goal = false;
+			await update({ reset: false });
+			loading = false;
+			console.log(result);
+		};
+	};
 	function toggleAssisted(id: number) {
 		if (id === assist) assist = null;
 	}
 </script>
 
-<form action="?/attempt" method="post" use:enhance on:submit={resetForm}>
+<form action="?/attempt" method="post" use:enhance={addEvent}>
 	<div class="form-control m-4">
 		<label class="label cursor-pointer">
 			<span class="label-text">Goal</span>
@@ -42,7 +58,7 @@
 		</label>
 		<label class="label cursor-pointer">
 			<span class="label-text">Penalty</span>
-			<input type="checkbox" class="toggle" name="penalty" />
+			<input type="checkbox" class="toggle" name="penalty" checked={penalty} />
 		</label>
 		<label class="label cursor-pointer">
 			<span class="label-text">Time</span>
@@ -118,10 +134,6 @@
 		<label class="label">
 			<span class="label-text">Goalie</span>
 			<span class="flex">
-				<label class="cursor-pointer">
-					<PlayerAvatarSelect name="AI" selected={null === goalie ? true : false} />
-					<input type="radio" name="goalie" bind:group={goalie} value={null} hidden />
-				</label>
 				{#each gamePlayers as { name, imageUri, id }}
 					<label class="cursor-pointer">
 						<PlayerAvatarSelect {imageUri} {name} selected={id === goalie ? true : false} />
@@ -132,7 +144,7 @@
 		</label>
 		<input type="hidden" name="gameId" value={activeGame?.id} />
 		<div class="flex w-full justify-center">
-			<button class="btn btn-wide m-4">Submit Attempt</button>
+			<button class="btn btn-wide m-4" class:loading disabled={loading}>Submit Attempt</button>
 		</div>
 	</div>
 </form>

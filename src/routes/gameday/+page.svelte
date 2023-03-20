@@ -11,7 +11,6 @@
 
 {#if gameday}
 	<GameControl
-		time={form?.attempt?.time}
 		attempts={data.activeGame?.attempts}
 		gameDayId={gameday.id}
 		activeGame={data.activeGame}

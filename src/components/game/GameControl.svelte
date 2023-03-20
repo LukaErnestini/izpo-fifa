@@ -9,7 +9,6 @@
 	export let activeGame: GamePopulated;
 	export let players: Player[] = [];
 	export let attempts: Attempt[] = [];
-	export let time: number | null | undefined;
 </script>
 
 {#if !activeGame}
@@ -21,6 +20,6 @@
 		</div>
 	</form>
 {:else}
-	<AttemptsForm {activeGame} {time} />
+	<AttemptsForm {activeGame} />
 	<AttemptsLog {attempts} />
 {/if}
