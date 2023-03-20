@@ -19,16 +19,19 @@ model Player {
   assists  Attempt[] @relation("playerAssists")
   goalie   Attempt[] @relation("playerAsGoalie")
   gamedays Gameday[]
+  fouls    Foul[]
 }
 
 model Foul {
-  id     Int     @id @default(autoincrement())
-  card   String?
-  time   Int?
-  x      Int?
-  y      Int?
-  game   Game    @relation(fields: [gameId], references: [id])
-  gameId Int
+  id       Int     @id @default(autoincrement())
+  card     String?
+  time     Int?
+  x        Int?
+  y        Int?
+  game     Game    @relation(fields: [gameId], references: [id])
+  gameId   Int
+  player   Player  @relation(fields: [playerId], references: [id])
+  playerId Int
 }
 
 model Game {
