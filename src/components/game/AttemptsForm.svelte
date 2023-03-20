@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { enhance, type SubmitFunction } from '$app/forms';
 	import type { GamePopulated } from '$lib/types/types';
 	import type { Player } from '@prisma/client';
+	import { enhance, type SubmitFunction } from '$app/forms';
+	import { slide } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
+	import { getTeammates } from './util';
 	import SelectPlayersInput from './SelectPlayersInput.svelte';
 	import TimeInput from './TimeInput.svelte';
 	import ToggleInput from './ToggleInput.svelte';
-	import { getTeammates } from './util';
-	import { slide } from 'svelte/transition';
-	import { quintOut } from 'svelte/easing';
 	import CardsSection from './CardsSection.svelte';
-	import type { Foul } from '@prisma/client';
 
 	export let activeGame: GamePopulated;
 
@@ -23,7 +22,7 @@
 	let time = 0;
 	let shooterTeammates: Player[] = [];
 	let goaliePlayers: Player[] = [];
-	let expanded = true;
+	let expanded = false;
 
 	$: shooterTeammates = getTeammates(
 		activeGame?.teams[0].players,

@@ -26,7 +26,7 @@
 	}
 </script>
 
-<label class="label">
+<div class="flex justify-between p-1">
 	<span class="label-text">Time</span>
 	<div>
 		<!-- svelte-ignore a11y-mouse-events-have-key-events -->
@@ -62,4 +62,4 @@
 			}}>+</button
 		>
 	</div>
-</label>
+</div>
