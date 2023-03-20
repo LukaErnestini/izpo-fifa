@@ -6,13 +6,6 @@
 	let buttonHeld = false;
 	const interval = tweened(200, { duration: 2000, easing: sineIn });
 
-	function changeTime(n: number) {
-		if (time) time += n;
-		else time = n;
-		if (time < 0) time = 0;
-		else if (time > 130) time = 130;
-	}
-
 	async function changeNum(n: number) {
 		interval.set(200, { duration: 0 });
 		interval.set(50);
@@ -31,9 +24,6 @@
 			await new Promise((r) => setTimeout(r, $interval));
 		}
 	}
-
-	// interval.set(50);
-	$: console.log(buttonHeld);
 </script>
 
 <label class="label">
