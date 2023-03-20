@@ -90,49 +90,26 @@
 			</div>
 		</label> -->
 		<!-- svelte-ignore a11y-label-has-associated-control -->
-		<label class="label">
-			<span class="label-text">Shooter</span>
-			<span class="flex">
-				{#each gamePlayers as { name, imageUri, id }}
-					<label class="cursor-pointer">
-						<PlayerAvatarSelect {imageUri} {name} selected={id === shooter ? true : false} />
-						<input type="radio" name="shooter" bind:group={shooter} value={id} hidden />
-					</label>
-				{/each}
-			</span>
-		</label>
-		<label class="label">
-			<span class="label-text">Assisted By</span>
-			<span class="flex">
-				{#each shooterTeammates as { name, imageUri, id }}
-					<label class="cursor-pointer">
-						<PlayerAvatarSelect {imageUri} {name} selected={id === assist ? true : false} />
-						<input
-							type="radio"
-							name="assisted"
-							bind:group={assist}
-							value={id}
-							hidden
-							on:click={() => toggleAssisted(id)}
-						/>
-					</label>
-				{/each}
-			</span>
-		</label>
+		<SelectPlayersInput
+			inputName="shooter"
+			label="Shooter"
+			players={gamePlayers}
+			bind:selected={shooter}
+		/>
+		<SelectPlayersInput
+			inputName="assisted"
+			label="Assisted By"
+			players={shooterTeammates}
+			bind:selected={assist}
+		/>
 		{#if penalty}
-			<label class="label">
-				<span class="label-text">Goalie</span>
-				<span class="flex">
-					{#each goaliePlayers as { name, imageUri, id }}
-						<label class="cursor-pointer">
-							<PlayerAvatarSelect {imageUri} {name} selected={id === goalie ? true : false} />
-							<input type="radio" name="goalie" bind:group={goalie} value={id} hidden />
-						</label>
-					{/each}
-				</span>
-			</label>
+			<SelectPlayersInput
+				inputName="goalie"
+				label="Goalie"
+				players={goaliePlayers}
+				bind:selected={goalie}
+			/>
 		{/if}
-		<SelectPlayersInput inputName="test" label="Test" players={goaliePlayers} />
 		<input type="hidden" name="gameId" value={activeGame?.id} />
 		<div class="flex w-full justify-center">
 			<button class="btn btn-wide m-4" class:loading disabled={loading}>Submit Attempt</button>
