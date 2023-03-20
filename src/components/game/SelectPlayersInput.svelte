@@ -12,7 +12,7 @@
 	}
 </script>
 
-<label class="label">
+<div class="flex items-center justify-between">
 	<span class="label-text">{label}</span>
 	<span class="flex">
 		{#each players as { name, imageUri, id }}
@@ -29,4 +29,4 @@
 			</label>
 		{/each}
 	</span>
-</label>
+</div>
