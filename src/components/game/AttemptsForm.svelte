@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { enhance, type SubmitFunction } from '$app/forms';
-	import { invalidate } from '$app/navigation';
 	import type { GamePopulated } from '$lib/types/types';
 	import type { Player } from '@prisma/client';
-	import PlayerAvatarSelect from './PlayerAvatarSelect.svelte';
 	import SelectPlayersInput from './SelectPlayersInput.svelte';
 	import TimeInput from './TimeInput.svelte';
 	import ToggleInput from './ToggleInput.svelte';
@@ -54,9 +52,6 @@
 			loading = false;
 		};
 	};
-	function toggleAssisted(id: number) {
-		if (id === assist) assist = null;
-	}
 </script>
 
 <form action="?/attempt" method="post" use:enhance={addEvent}>
