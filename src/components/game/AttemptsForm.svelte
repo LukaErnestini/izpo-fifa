@@ -6,6 +6,8 @@
 	import TimeInput from './TimeInput.svelte';
 	import ToggleInput from './ToggleInput.svelte';
 	import { getTeammates } from './util';
+	import { slide } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
 
 	export let activeGame: GamePopulated;
 	// export let time: number | null | undefined;
@@ -19,6 +21,7 @@
 	let time = 0;
 	let shooterTeammates: Player[] = [];
 	let goaliePlayers: Player[] = [];
+	let expanded = false;
 
 	$: shooterTeammates = getTeammates(
 		activeGame?.teams[0].players,
@@ -58,20 +61,19 @@
 	<div class="form-control m-4">
 		<ToggleInput bind:checked={goal} label="Goal" name="goal" />
 		<ToggleInput checked={goal} label="On Target" name="onTarget" />
-		<ToggleInput bind:checked={penalty} label="Penalty" name="penalty" />
 		<TimeInput {time} />
 		<!-- <label class="label cursor-pointer block">
 			<span class="label-text">Distance</span>
 			<div class="mr-4">
 				<input
-					name="distance"
-					type="range"
+				name="distance"
+				type="range"
 					min="-4"
 					max="31"
 					value="-4"
 					class="range range-xs"
 					step="5"
-				/>
+					/>
 			</div>
 			<div class="w-full flex justify-between text-xs px-2">
 				<span>null</span>
@@ -97,14 +99,25 @@
 			players={shooterTeammates}
 			bind:selected={assist}
 		/>
-		{#if penalty}
-			<SelectPlayersInput
-				inputName="goalie"
-				label="Goalie"
-				players={goaliePlayers}
-				bind:selected={goalie}
-			/>
+		{#if expanded}
+			<div transition:slide={{ duration: 300, easing: quintOut }}>
+				<div class="divider" />
+				<ToggleInput bind:checked={penalty} label="Penalty" name="penalty" />
+				{#if penalty}
+					<SelectPlayersInput
+						inputName="goalie"
+						label="Goalie"
+						players={goaliePlayers}
+						bind:selected={goalie}
+					/>
+				{/if}
+			</div>
 		{/if}
+		<div class="flex w-full justify-center">
+			<button type="button" class="btn btn-outline" on:click={() => (expanded = !expanded)}
+				>{expanded ? 'HIDE' : 'EXPAND'}</button
+			>
+		</div>
 		<input type="hidden" name="gameId" value={activeGame?.id} />
 		<div class="flex w-full justify-center">
 			<button class="btn btn-wide m-4" class:loading disabled={loading}>Submit Attempt</button>
