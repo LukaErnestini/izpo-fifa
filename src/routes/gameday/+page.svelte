@@ -11,6 +11,7 @@
 
 {#if gameday}
 	<GameControl
+		fouls={data.activeGame?.fouls}
 		attempts={data.activeGame?.attempts}
 		gameDayId={gameday.id}
 		activeGame={data.activeGame}

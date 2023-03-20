@@ -8,10 +8,11 @@
 	import { getTeammates } from './util';
 	import { slide } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-	import Icon from '@iconify/svelte';
+	import CardsSection from './CardsSection.svelte';
+	import type { Foul } from '@prisma/client';
 
 	export let activeGame: GamePopulated;
-	// export let time: number | null | undefined;
+
 	let gamePlayers: Player[] = [];
 	let shooter: number | null;
 	let assist: number | null;
@@ -113,17 +114,7 @@
 					/>
 				{/if}
 				<div class="divider" />
-				<div class="flex items-center justify-between h-16 px-1">
-					<span class="label-text">Cards</span>
-					<span class="flex">
-						<button formaction="?/yellow">
-							<Icon icon="tabler:rectangle-vertical-filled" color="yellow" width="48" />
-						</button>
-						<button formaction="?/red">
-							<Icon icon="tabler:rectangle-vertical-filled" color="red" width="48" />
-						</button>
-					</span>
-				</div>
+				<CardsSection />
 			</div>
 		{/if}
 		<div class="flex w-full justify-center">

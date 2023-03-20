@@ -19,7 +19,14 @@ export const load = (async () => {
 		},
 		include: {
 			teams: { include: { players: true } },
-			attempts: { orderBy: { id: 'desc' } }
+			attempts: {
+				orderBy: { id: 'desc' },
+				include: { shooter: true }
+			},
+			fouls: {
+				orderBy: { id: 'desc' },
+				include: { player: true }
+			}
 		}
 	});
 	// console.log(activeGame?.attempts.length);

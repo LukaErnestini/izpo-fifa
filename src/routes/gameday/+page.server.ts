@@ -164,5 +164,14 @@ export const actions = {
 	},
 	yellow: async ({ request }) => {
 		await card('yellow', request);
+	},
+	removeFoul: async ({ request }) => {
+		const data = await request.formData();
+		const id = data.get('foulId') as string;
+		try {
+			await prisma.foul.delete({ where: { id: +id } });
+		} catch (error) {
+			console.log(error);
+		}
 	}
 } satisfies Actions;

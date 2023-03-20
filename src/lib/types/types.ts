@@ -1,4 +1,4 @@
-import type { Game, Player, Team } from '@prisma/client';
+import type { Attempt, Game, Player, Team } from '@prisma/client';
 
 export type GamePopulated =
 	| (Game & {
@@ -7,3 +7,9 @@ export type GamePopulated =
 			})[];
 	  })
 	| null;
+
+export type AttemptsPlayers =
+	| (Attempt & {
+			shooter: Player;
+	  })[]
+	| undefined;
