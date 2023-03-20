@@ -12,7 +12,7 @@
 	}
 </script>
 
-<div class="flex items-center justify-between">
+<div class="flex items-center justify-between h-16">
 	<span class="label-text">{label}</span>
 	<span class="flex">
 		{#each players as { name, imageUri, id }}
