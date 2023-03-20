@@ -21,10 +21,21 @@ model Player {
   gamedays Gameday[]
 }
 
+model Foul {
+  id     Int     @id @default(autoincrement())
+  card   String?
+  time   Int?
+  x      Int?
+  y      Int?
+  game   Game    @relation(fields: [gameId], references: [id])
+  gameId Int
+}
+
 model Game {
   id        Int       @id @default(autoincrement())
   date      DateTime  @default(now())
   attempts  Attempt[]
+  fouls     Foul[]
   Gameday   Gameday?  @relation(fields: [gamedayId], references: [id])
   gamedayId Int?
   teams     Team[]    @relation("teamsInGame")
@@ -52,6 +63,8 @@ model Attempt {
   id         Int     @id @default(autoincrement())
   time       Int?
   distance   Int?
+  x          Int?
+  y          Int?
   goal       Boolean @default(false)
   penalty    Boolean @default(false)
   onTarget   Boolean @default(false)
