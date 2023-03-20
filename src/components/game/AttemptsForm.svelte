@@ -8,6 +8,7 @@
 	import { getTeammates } from './util';
 	import { slide } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
+	import Icon from '@iconify/svelte';
 
 	export let activeGame: GamePopulated;
 	// export let time: number | null | undefined;
@@ -21,7 +22,7 @@
 	let time = 0;
 	let shooterTeammates: Player[] = [];
 	let goaliePlayers: Player[] = [];
-	let expanded = false;
+	let expanded = true;
 
 	$: shooterTeammates = getTeammates(
 		activeGame?.teams[0].players,
@@ -111,6 +112,18 @@
 						bind:selected={goalie}
 					/>
 				{/if}
+				<div class="divider" />
+				<div class="flex items-center justify-between h-16 px-1">
+					<span class="label-text">Cards</span>
+					<span class="flex">
+						<button formaction="?/yellow">
+							<Icon icon="tabler:rectangle-vertical-filled" color="yellow" width="48" />
+						</button>
+						<button formaction="?/red">
+							<Icon icon="tabler:rectangle-vertical-filled" color="red" width="48" />
+						</button>
+					</span>
+				</div>
 			</div>
 		{/if}
 		<div class="flex w-full justify-center">

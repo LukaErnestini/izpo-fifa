@@ -3,6 +3,25 @@ import { Prisma, type Game } from '@prisma/client';
 import { error } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
+async function card(card: string, request: Request) {
+	const data = await request.formData();
+	const time = data.get('time') ? +(data.get('time') as string) : null;
+	const shooterId = data.get('shooter') ? +(data.get('shooter') as string) : undefined;
+	const gameId = data.get('gameId') ? +(data.get('gameId') as string) : undefined;
+	try {
+		await prisma.foul.create({
+			data: {
+				card,
+				time,
+				game: { connect: { id: gameId } },
+				player: { connect: { id: shooterId } }
+			}
+		});
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 export const actions = {
 	create: async ({ request }) => {
 		try {
@@ -139,5 +158,11 @@ export const actions = {
 		} catch (error) {
 			console.log(error);
 		}
+	},
+	red: async ({ request }) => {
+		await card('red', request);
+	},
+	yellow: async ({ request }) => {
+		await card('yellow', request);
 	}
 } satisfies Actions;
