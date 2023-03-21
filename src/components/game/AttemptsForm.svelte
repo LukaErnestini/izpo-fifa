@@ -17,12 +17,17 @@
 	let assist: number | null;
 	let goalie: number | null = null;
 	let goal = false;
+	let onTarget = false;
 	let penalty = false;
 	let loading = false;
 	let time = 0;
 	let shooterTeammates: Player[] = [];
 	let goaliePlayers: Player[] = [];
 	let expanded = false;
+
+	if (activeGame) {
+		gamePlayers = [...activeGame.teams[0].players, ...activeGame.teams[1].players];
+	}
 
 	$: shooterTeammates = getTeammates(
 		activeGame?.teams[0].players,
@@ -37,9 +42,10 @@
 		true
 	);
 
-	if (activeGame) {
-		gamePlayers = [...activeGame.teams[0].players, ...activeGame.teams[1].players];
+	$: if (goal) {
+		onTarget = true;
 	}
+
 	const addEvent: SubmitFunction = (input) => {
 		// Before form submits
 		loading = true;
@@ -50,8 +56,9 @@
 			assist = null;
 			goalie = null;
 			penalty = false;
-			goal = !goal; // Do this because if goal is false and onTarget toggled ON, onTarget will not switch.
+			onTarget = false;
 			goal = false;
+			expanded = false;
 			await update({ reset: false });
 			loading = false;
 		};
@@ -61,7 +68,7 @@
 <form action="?/attempt" method="post" use:enhance={addEvent}>
 	<div class="form-control m-4">
 		<ToggleInput bind:checked={goal} label="Goal" name="goal" />
-		<ToggleInput checked={goal} label="On Target" name="onTarget" />
+		<ToggleInput bind:checked={onTarget} label="On Target" name="onTarget" disabled={goal} />
 		<TimeInput {time} />
 		<!-- <label class="label cursor-pointer block">
 			<span class="label-text">Distance</span>
