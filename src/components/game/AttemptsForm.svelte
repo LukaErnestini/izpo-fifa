@@ -134,8 +134,3 @@
 		</div>
 	</div>
 </form>
-<form action="?/endGame" method="post">
-	<div class="flex w-full justify-center">
-		<button class="btn btn-error btn-sm m-4">End Game</button>
-	</div>
-</form>
