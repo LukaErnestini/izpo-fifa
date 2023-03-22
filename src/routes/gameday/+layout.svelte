@@ -1,21 +1,28 @@
 <script lang="ts">
-	import type { ActionData, LayoutData } from './$types';
+	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
-	let games = data.gameday?.games;
 	let activeGame = data.activeGame;
+
+	$: activeGame = data.activeGame;
 </script>
 
 <div class="navbar bg-base-100">
-	<div class="flex-1">
-		<span class="btn btn-ghost normal-case text-xl">
+	{#if !activeGame}
+		<span class="normal-case text-xl">
 			<p>Game Day</p>
-			{#if activeGame}
-				<p class="ml-2">-</p>
-				<p class="ml-2">Game {games?.length}</p>
-			{/if}
 		</span>
-	</div>
+	{:else}
+		<div class="flex justify-between w-full">
+			<span class="normal-case text-xl">{activeGame.teams[0].name}</span>
+			<div>
+				<span class="normal-case text-xl">{activeGame.scoreTeamA}</span>
+				<span class="normal-case text-xl">:</span>
+				<span class="normal-case text-xl">{activeGame.scoreTeamB}</span>
+			</div>
+			<span class="normal-case text-xl">{activeGame.teams[1].name}</span>
+		</div>
+	{/if}
 </div>
 
 <slot><!-- optional fallback --></slot>
