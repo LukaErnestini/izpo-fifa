@@ -1,6 +1,6 @@
 import { prisma } from '$lib/server/db';
 import { Prisma, type Game } from '@prisma/client';
-import { error } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 async function card(card: string, request: Request) {
@@ -102,6 +102,10 @@ export const actions = {
 	attempt: async ({ request }) => {
 		try {
 			const data = await request.formData();
+			const shooterId = data.get('shooter') ? +(data.get('shooter') as string) : undefined;
+			if (!shooterId) {
+				return fail(400, { error: 'A shooter must be selected.' });
+			}
 			const goal = data.get('goal') ? true : false;
 			const autogoal = data.get('autogoal') ? true : false;
 			const onTarget = data.get('onTarget') ? true : false;
@@ -110,7 +114,6 @@ export const actions = {
 			const x = data.get('x') ? +(data.get('x') as string) : null;
 			const y = data.get('y') ? +(data.get('y') as string) : null;
 			const distance = data.get('distance') ? +(data.get('distance') as string) : -1;
-			const shooterId = data.get('shooter') ? +(data.get('shooter') as string) : undefined;
 			const assistedId = data.get('assisted') ? +(data.get('assisted') as string) : undefined;
 			const goalieId = data.get('goalie') ? +(data.get('goalie') as string) : undefined;
 			const gameId = data.get('gameId') ? +(data.get('gameId') as string) : undefined;

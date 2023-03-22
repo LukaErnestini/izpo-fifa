@@ -55,7 +55,12 @@
 		// Before form submits
 		loading = true;
 
-		return async ({ update, result }) => {
+		return async ({ update, result, form }) => {
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+			if (result.type === 'failure') {
+				loading = false;
+				return await update();
+			}
 			// After form submits
 			shooter = null;
 			assist = null;
@@ -79,31 +84,6 @@
 		<ToggleInput bind:checked={goal} label="Goal" name="goal" />
 		<ToggleInput bind:checked={onTarget} label="On Target" name="onTarget" disabled={goal} />
 		<TimeInput {time} />
-		<!-- <label class="label cursor-pointer block">
-			<span class="label-text">Distance</span>
-			<div class="mr-4">
-				<input
-				name="distance"
-				type="range"
-					min="-4"
-					max="31"
-					value="-4"
-					class="range range-xs"
-					step="5"
-					/>
-			</div>
-			<div class="w-full flex justify-between text-xs px-2">
-				<span>null</span>
-				<span>1m</span>
-				<span>6m</span>
-				<span>11m</span>
-				<span>16m</span>
-				<span>21m</span>
-				<span>26m</span>
-				<span>31m+</span>
-			</div>
-		</label> -->
-		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<SelectPlayersInput
 			inputName="shooter"
 			label="Shooter"
