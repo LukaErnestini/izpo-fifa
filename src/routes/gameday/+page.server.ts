@@ -1,5 +1,4 @@
 import { prisma } from '$lib/server/db';
-import { Prisma, type Game } from '@prisma/client';
 import { error, fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
@@ -8,17 +7,22 @@ async function card(card: string, request: Request) {
 	const time = data.get('time') ? +(data.get('time') as string) : null;
 	const shooterId = data.get('shooter') ? +(data.get('shooter') as string) : undefined;
 	const gameId = data.get('gameId') ? +(data.get('gameId') as string) : undefined;
+	const x = data.get('x') ? +(data.get('x') as string) : null;
+	const y = data.get('y') ? +(data.get('y') as string) : null;
 	try {
 		await prisma.foul.create({
 			data: {
 				card,
 				time,
+				x,
+				y,
 				game: { connect: { id: gameId } },
 				player: { connect: { id: shooterId } }
 			}
 		});
 	} catch (error) {
 		console.log(error);
+		fail(500, { error: 'Some error occured.' });
 	}
 }
 
