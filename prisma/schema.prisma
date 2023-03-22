@@ -65,9 +65,9 @@ model Gameday {
 model Attempt {
   id         Int     @id @default(autoincrement())
   time       Int?
-  distance   Int?
-  x          Int?
-  y          Int?
+  distance   Float?
+  x          Float?
+  y          Float?
   goal       Boolean @default(false)
   penalty    Boolean @default(false)
   onTarget   Boolean @default(false)
