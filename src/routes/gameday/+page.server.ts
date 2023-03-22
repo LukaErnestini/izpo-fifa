@@ -128,7 +128,6 @@ export const actions = {
 					Game: { connect: { id: gameId } }
 				}
 			});
-			console.log(attempt);
 			return { attempt };
 		} catch (error) {
 			console.log(error);
