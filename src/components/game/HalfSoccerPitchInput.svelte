@@ -21,7 +21,6 @@
 		y = (offsetY / img.height) * soccerPitchTouchlineHalf;
 		distance = Math.sqrt(Math.pow(goalX - x, 2) + Math.pow(goalY - y, 2));
 
-		console.log(offsetX, offsetY, x, y, distance);
 		// Set the icon's position relative to the click coordinates
 		iconDiv.style.left = `${offsetX - iconSize / 2 + 1}px`;
 		iconDiv.style.top = `${offsetY - iconSize / 2 - 12}px`;
