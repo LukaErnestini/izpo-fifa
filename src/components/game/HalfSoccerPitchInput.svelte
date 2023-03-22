@@ -34,14 +34,13 @@
 	}
 </script>
 
-<div class="min-w-full py-1 relative">
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div class="min-w-full py-1 relative" on:click={handleClick} on:dblclick={clear}>
 	<img
 		src="/img/half-soccer-pitch.png"
 		alt="Half soccer pitch"
-		on:click={handleClick}
-		on:dblclick={clear}
 		bind:this={img}
+		class="pointer-events-none"
 	/>
 	<div
 		bind:this={iconDiv}
