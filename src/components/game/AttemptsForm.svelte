@@ -9,6 +9,7 @@
 	import TimeInput from './TimeInput.svelte';
 	import ToggleInput from './ToggleInput.svelte';
 	import CardsSection from './CardsSection.svelte';
+	import HalfSoccerPitchInput from './HalfSoccerPitchInput.svelte';
 
 	export let activeGame: GamePopulated;
 
@@ -107,6 +108,7 @@
 			players={shooterTeammates}
 			bind:selected={assist}
 		/>
+		<HalfSoccerPitchInput />
 		{#if expanded}
 			<div transition:slide={{ duration: 300, easing: quintOut }}>
 				<div class="divider" />
