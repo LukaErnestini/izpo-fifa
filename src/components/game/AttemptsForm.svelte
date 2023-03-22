@@ -21,6 +21,9 @@
 	let onTarget = false;
 	let penalty = false;
 	let loading = false;
+	let x: number | null;
+	let y: number | null;
+	let distance: number | null;
 	let time = 0;
 	let shooterTeammates: Player[] = [];
 	let goaliePlayers: Player[] = [];
@@ -60,6 +63,9 @@
 			onTarget = false;
 			goal = false;
 			expanded = false;
+			x = null;
+			y = null;
+			distance = null;
 			await update({ reset: false });
 			loading = false;
 		};
@@ -108,7 +114,7 @@
 			players={shooterTeammates}
 			bind:selected={assist}
 		/>
-		<HalfSoccerPitchInput />
+		<HalfSoccerPitchInput bind:x bind:y bind:distance />
 		{#if expanded}
 			<div transition:slide={{ duration: 300, easing: quintOut }}>
 				<div class="divider" />

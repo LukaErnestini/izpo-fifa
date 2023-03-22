@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 
-	let x: number | null = null;
-	let y: number | null = null;
-	let distance: number | null = null;
+	export let x: number | null = null;
+	export let y: number | null = null;
+	export let distance: number | null = null;
 
 	const soccerPitchWidth = 70; //meters
 	const soccerPitchTouchlineHalf = 50;
