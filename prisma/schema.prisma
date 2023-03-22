@@ -35,15 +35,18 @@ model Foul {
 }
 
 model Game {
-  id        Int       @id @default(autoincrement())
-  date      DateTime  @default(now())
-  attempts  Attempt[]
-  fouls     Foul[]
-  Gameday   Gameday?  @relation(fields: [gamedayId], references: [id])
-  gamedayId Int?
-  teams     Team[]    @relation("teamsInGame")
-  winnerId  Int?
-  finished  Boolean   @default(false)
+  id         Int       @id @default(autoincrement())
+  date       DateTime  @default(now())
+  attempts   Attempt[]
+  fouls      Foul[]
+  Gameday    Gameday?  @relation(fields: [gamedayId], references: [id])
+  gamedayId  Int?
+  teams      Team[]    @relation("teamsInGame")
+  scoreTeamA Int       @default(0)
+  scoreTeamB Int       @default(0)
+  winner     Team?     @relation(fields: [winnerId], references: [id])
+  winnerId   Int?
+  finished   Boolean   @default(false)
 }
 
 model Team {
@@ -52,6 +55,7 @@ model Team {
   color   String?
   players Player[]
   games   Game[]   @relation("teamsInGame")
+  Game    Game[]
 }
 
 model Gameday {
