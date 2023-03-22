@@ -103,6 +103,7 @@ export const actions = {
 		try {
 			const data = await request.formData();
 			const goal = data.get('goal') ? true : false;
+			const autogoal = data.get('autogoal') ? true : false;
 			const onTarget = data.get('onTarget') ? true : false;
 			const penalty = data.get('penalty') ? true : false;
 			const time = data.get('time') ? +(data.get('time') as string) : null;
@@ -116,6 +117,7 @@ export const actions = {
 			const attempt = await prisma.attempt.create({
 				data: {
 					goal,
+					autogoal,
 					onTarget,
 					penalty,
 					time,

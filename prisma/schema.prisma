@@ -69,6 +69,7 @@ model Attempt {
   x          Float?
   y          Float?
   goal       Boolean @default(false)
+  autogoal   Boolean @default(false)
   penalty    Boolean @default(false)
   onTarget   Boolean @default(false)
   shooter    Player  @relation("playerShots", fields: [shooterId], references: [id])

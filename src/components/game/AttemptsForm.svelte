@@ -18,6 +18,7 @@
 	let assist: number | null;
 	let goalie: number | null = null;
 	let goal = false;
+	let autogoal = false;
 	let onTarget = false;
 	let penalty = false;
 	let loading = false;
@@ -62,6 +63,7 @@
 			penalty = false;
 			onTarget = false;
 			goal = false;
+			autogoal = false;
 			expanded = false;
 			x = null;
 			y = null;
@@ -127,6 +129,7 @@
 						bind:selected={goalie}
 					/>
 				{/if}
+				<ToggleInput bind:checked={autogoal} label="Auto Goal" name="autogoal" />
 				<div class="divider" />
 				<CardsSection />
 			</div>
