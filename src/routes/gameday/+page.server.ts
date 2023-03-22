@@ -104,23 +104,23 @@ export const actions = {
 		}
 	},
 	attempt: async ({ request }) => {
+		const data = await request.formData();
+		const shooterId = data.get('shooter') ? +(data.get('shooter') as string) : undefined;
+		if (!shooterId) {
+			return fail(400, { error: 'A shooter must be selected.' });
+		}
+		const goal = data.get('goal') ? true : false;
+		const autogoal = data.get('autogoal') ? true : false;
+		const onTarget = data.get('onTarget') ? true : false;
+		const penalty = data.get('penalty') ? true : false;
+		const time = data.get('time') ? +(data.get('time') as string) : null;
+		const x = data.get('x') ? +(data.get('x') as string) : null;
+		const y = data.get('y') ? +(data.get('y') as string) : null;
+		const distance = data.get('distance') ? +(data.get('distance') as string) : -1;
+		const assistedId = data.get('assisted') ? +(data.get('assisted') as string) : undefined;
+		const goalieId = data.get('goalie') ? +(data.get('goalie') as string) : undefined;
+		const gameId = data.get('gameId') ? +(data.get('gameId') as string) : undefined;
 		try {
-			const data = await request.formData();
-			const shooterId = data.get('shooter') ? +(data.get('shooter') as string) : undefined;
-			if (!shooterId) {
-				return fail(400, { error: 'A shooter must be selected.' });
-			}
-			const goal = data.get('goal') ? true : false;
-			const autogoal = data.get('autogoal') ? true : false;
-			const onTarget = data.get('onTarget') ? true : false;
-			const penalty = data.get('penalty') ? true : false;
-			const time = data.get('time') ? +(data.get('time') as string) : null;
-			const x = data.get('x') ? +(data.get('x') as string) : null;
-			const y = data.get('y') ? +(data.get('y') as string) : null;
-			const distance = data.get('distance') ? +(data.get('distance') as string) : -1;
-			const assistedId = data.get('assisted') ? +(data.get('assisted') as string) : undefined;
-			const goalieId = data.get('goalie') ? +(data.get('goalie') as string) : undefined;
-			const gameId = data.get('gameId') ? +(data.get('gameId') as string) : undefined;
 			const attempt = await prisma.attempt.create({
 				data: {
 					goal,
@@ -137,9 +137,10 @@ export const actions = {
 					Game: { connect: { id: gameId } }
 				}
 			});
-			return { attempt };
+			actions.tallyScore();
 		} catch (error) {
 			console.log(error);
+			fail(400, { error: 'An unexpected error occured.' });
 		}
 	},
 	endGame: async ({ request }) => {
@@ -184,6 +185,54 @@ export const actions = {
 			await prisma.foul.delete({ where: { id: +id } });
 		} catch (error) {
 			console.log(error);
+		}
+	},
+	tallyScore: async () => {
+		let scoreTeamA = 0;
+		let scoreTeamB = 0;
+		try {
+			const activeGameday = await prisma.gameday.findFirst({ where: { active: true } });
+			const activeGame = await prisma.game.findFirst({
+				where: {
+					AND: {
+						finished: false,
+						Gameday: activeGameday
+					}
+				},
+				include: {
+					attempts: { include: { shooter: true } },
+					teams: { include: { players: true } }
+				}
+			});
+
+			if (!activeGame) {
+				return fail(500, { error: 'There is no active game.' });
+			}
+
+			// Loop through the attempts and tally the scores
+			for (const attempt of activeGame.attempts) {
+				if (attempt.goal) {
+					if (
+						activeGame.teams[0].players.filter((playa) => playa.id === attempt.shooter.id).length
+					) {
+						// The shooter is on teamA
+						scoreTeamA++;
+					} else {
+						// The shooter is on teamB
+						scoreTeamB++;
+					}
+				}
+			}
+
+			const game = await prisma.game.update({
+				where: { id: activeGame?.id },
+				data: { scoreTeamA, scoreTeamB }
+			});
+
+			// console.log(`${scoreTeamA}:${scoreTeamB}`);
+		} catch (error) {
+			console.log(error);
+			fail(500, { error: 'An unexpected error occured' });
 		}
 	}
 } satisfies Actions;
