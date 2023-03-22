@@ -106,6 +106,8 @@ export const actions = {
 			const onTarget = data.get('onTarget') ? true : false;
 			const penalty = data.get('penalty') ? true : false;
 			const time = data.get('time') ? +(data.get('time') as string) : null;
+			const x = data.get('x') ? +(data.get('x') as string) : null;
+			const y = data.get('y') ? +(data.get('y') as string) : null;
 			const distance = data.get('distance') ? +(data.get('distance') as string) : -1;
 			const shooterId = data.get('shooter') ? +(data.get('shooter') as string) : undefined;
 			const assistedId = data.get('assisted') ? +(data.get('assisted') as string) : undefined;
@@ -117,6 +119,8 @@ export const actions = {
 					onTarget,
 					penalty,
 					time,
+					x,
+					y,
 					distance: distance > 0 ? distance : null,
 					shooter: { connect: { id: shooterId } },
 					assisted: assistedId ? { connect: { id: assistedId } } : undefined,
@@ -124,7 +128,7 @@ export const actions = {
 					Game: { connect: { id: gameId } }
 				}
 			});
-			// console.log(attempt);
+			console.log(attempt);
 			return { attempt };
 		} catch (error) {
 			console.log(error);
