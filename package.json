@@ -43,6 +43,7 @@
 		"@tailwindcss/typography": "^0.5.9",
 		"aws-sdk": "^2.1338.0",
 		"daisyui": "^2.51.3",
+		"gridjs": "^6.0.6",
 		"nanoid": "^4.0.1"
 	}
 }
