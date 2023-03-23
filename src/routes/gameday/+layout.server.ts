@@ -9,7 +9,8 @@ export const load = (async () => {
 				include: {
 					teams: true,
 					winner: true
-				}
+				},
+				orderBy: { id: 'asc' }
 			},
 			players: true
 		}
