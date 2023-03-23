@@ -152,11 +152,19 @@ export const actions = {
 						finished: false,
 						Gameday: activeGameday
 					}
-				}
+				},
+				include: { teams: true }
 			});
+			if (!activeGame) {
+				return fail(404, { error: 'No active game found.' });
+			}
+			const winnerId =
+				activeGame.scoreTeamA > activeGame.scoreTeamB
+					? activeGame.teams[0].id
+					: activeGame.teams[0].id;
 			const game = await prisma.game.update({
 				where: { id: activeGame?.id },
-				data: { finished: true }
+				data: { finished: true, winnerId }
 			});
 			return { game };
 		} catch (error) {
