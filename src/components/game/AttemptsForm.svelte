@@ -51,6 +51,10 @@
 		onTarget = true;
 	}
 
+	$: if (autogoal) {
+		goal = true;
+	}
+
 	const addEvent: SubmitFunction = (input) => {
 		// Before form submits
 		loading = true;
@@ -97,23 +101,21 @@
 			bind:selected={assist}
 		/>
 		<HalfSoccerPitchInput bind:x bind:y bind:distance />
-		{#if expanded}
-			<div transition:slide={{ duration: 300, easing: quintOut }}>
-				<div class="divider" />
-				<ToggleInput bind:checked={penalty} label="Penalty" name="penalty" />
-				{#if penalty}
-					<SelectPlayersInput
-						inputName="goalie"
-						label="Goalie"
-						players={goaliePlayers}
-						bind:selected={goalie}
-					/>
-				{/if}
-				<ToggleInput bind:checked={autogoal} label="Auto Goal" name="autogoal" />
-				<div class="divider" />
-				<CardsSection />
-			</div>
-		{/if}
+		<div hidden={!expanded} transition:slide={{ duration: 300, easing: quintOut }}>
+			<div class="divider" />
+			<ToggleInput bind:checked={penalty} label="Penalty" name="penalty" />
+			{#if penalty}
+				<SelectPlayersInput
+					inputName="goalie"
+					label="Goalie"
+					players={goaliePlayers}
+					bind:selected={goalie}
+				/>
+			{/if}
+			<ToggleInput bind:checked={autogoal} label="Auto Goal" name="autogoal" />
+			<div class="divider" />
+			<CardsSection />
+		</div>
 		<div class="flex w-full justify-center">
 			<button type="button" class="btn btn-outline" on:click={() => (expanded = !expanded)}
 				>{expanded ? 'HIDE' : 'EXPAND'}</button
