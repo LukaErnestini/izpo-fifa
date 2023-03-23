@@ -10,6 +10,27 @@ import { env } from '$env/dynamic/private';
 export const load = (async ({ params }) => {
 	const id = +params.playerId;
 	const player = await prisma.player.findFirst({ where: { id } });
+	if (!player) {
+		return fail(404, { error: 'Player not found' });
+	}
+
+	// const games = await prisma.game.findMany({
+	// 	where: { teams: { some: { players: { some: { id: player.id } } } } }
+	// });
+	// const attempts = await prisma.attempt.findMany({ where: { shooterId: player.id } });
+	// const attemptsOnTarget = await prisma.attempt.findMany({
+	// 	where: { shooterId: player.id, OR: [{ onTarget: true }, { goal: true }] }
+	// });
+	// const attemptsGoal = await prisma.attempt.findMany({
+	// 	where: { shooterId: player.id, goal: true }
+	// });
+	// const attemptsPerGame = attempts.length / games.length;
+	// console.log(`Player Stats for ${player.name}:`);
+	// console.log(`- Games played: ${games.length}`);
+	// console.log(`- Total attempts: ${attempts.length}`);
+	// console.log(`- Attempts on target: ${attemptsOnTarget.length}`);
+	// console.log(`- Goals scored: ${attemptsGoal.length}`);
+	// console.log(`- Average attempts per game: ${attemptsPerGame.toFixed(2)}`);
 
 	return { player };
 }) satisfies PageServerLoad;
