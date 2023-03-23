@@ -13,14 +13,18 @@
 			<p>Game Day</p>
 		</span>
 	{:else}
-		<div class="flex justify-between w-full">
-			<span class="normal-case text-xl">{activeGame.teams[0].name}</span>
+		<div class="flex justify-between w-full relative">
+			<a href="/settings/teams/{activeGame.teams[0].id}" class="normal-case text-xl"
+				>{activeGame.teams[0].name}</a
+			>
 			<div>
-				<span class="normal-case text-xl">{activeGame.scoreTeamA}</span>
-				<span class="normal-case text-xl">:</span>
-				<span class="normal-case text-xl">{activeGame.scoreTeamB}</span>
+				<span class="normal-case text-2xl">{activeGame.scoreTeamA}</span>
+				<span class="normal-case text-2xl">:</span>
+				<span class="normal-case text-2xl">{activeGame.scoreTeamB}</span>
 			</div>
-			<span class="normal-case text-xl">{activeGame.teams[1].name}</span>
+			<a href="/settings/teams/{activeGame.teams[1].id}" class="normal-case text-xl"
+				>{activeGame.teams[1].name}</a
+			>
 		</div>
 	{/if}
 </div>
