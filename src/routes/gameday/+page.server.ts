@@ -72,6 +72,12 @@ export const actions = {
 			const team2players = data.getAll('team2').map((e) => {
 				return +e;
 			});
+			if (!team1players.length || !team2players.length) {
+				return fail(400, { error: 'Players for the team need to be selected' });
+			}
+			if (team1players.length !== team2players.length) {
+				return fail(400, { error: 'Teams should be of same size' });
+			}
 			const teams1 = await prisma.team.findMany({
 				where: { players: { every: { id: { in: team1players } } } },
 				include: { players: true }
@@ -161,10 +167,12 @@ export const actions = {
 			if (!activeGame) {
 				return fail(404, { error: 'No active game found.' });
 			}
-			const winnerId =
-				activeGame.scoreTeamA > activeGame.scoreTeamB
-					? activeGame.teams[0].id
-					: activeGame.teams[0].id;
+			let winnerId: number | null = null;
+			if (activeGame.scoreTeamA > activeGame.scoreTeamB) {
+				winnerId = activeGame.teams[0].id;
+			} else if (activeGame.scoreTeamA < activeGame.scoreTeamB) {
+				winnerId = activeGame.teams[1].id;
+			}
 			const game = await prisma.game.update({
 				where: { id: activeGame?.id },
 				data: { finished: true, winnerId }
