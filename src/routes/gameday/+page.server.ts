@@ -109,7 +109,7 @@ export const actions = {
 		if (!shooterId) {
 			return fail(400, { error: 'A shooter must be selected.' });
 		}
-		const goal = data.get('goal') ? true : false;
+		let goal = data.get('goal') ? true : false;
 		const autogoal = data.get('autogoal') ? true : false;
 		const onTarget = data.get('onTarget') ? true : false;
 		const penalty = data.get('penalty') ? true : false;
@@ -120,6 +120,9 @@ export const actions = {
 		const assistedId = data.get('assisted') ? +(data.get('assisted') as string) : undefined;
 		const goalieId = data.get('goalie') ? +(data.get('goalie') as string) : undefined;
 		const gameId = data.get('gameId') ? +(data.get('gameId') as string) : undefined;
+
+		if (autogoal) goal = true;
+
 		try {
 			const attempt = await prisma.attempt.create({
 				data: {
@@ -137,7 +140,7 @@ export const actions = {
 					Game: { connect: { id: gameId } }
 				}
 			});
-			actions.tallyScore();
+			await actions.tallyScore();
 		} catch (error) {
 			console.log(error);
 			fail(400, { error: 'An unexpected error occured.' });
