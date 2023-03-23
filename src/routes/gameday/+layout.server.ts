@@ -4,7 +4,15 @@ import type { LayoutServerLoad } from './$types';
 export const load = (async () => {
 	const gameday = await prisma.gameday.findFirst({
 		where: { active: true },
-		include: { games: true, players: true }
+		include: {
+			games: {
+				include: {
+					teams: true,
+					winner: true
+				}
+			},
+			players: true
+		}
 	});
 	if (!gameday) {
 		const players = await prisma.player.findMany();

@@ -1,7 +1,9 @@
 <script lang="ts">
+	import type { GamesTeams } from '$lib/types/types';
 	import type { Player } from '@prisma/client';
 
 	export let players: Player[];
+	export let games: GamesTeams;
 	const team1 = players.map((player) => {
 		return { ...player, selected: false, hidden: false };
 	});
@@ -63,3 +65,18 @@
 		<button class="btn btn-wide m-4">Start Game</button>
 	</div>
 </form>
+<div>
+	{#if games}
+		{#each games as game}
+			<a href="/game/{game.id}" class="block">
+				<span class={game.winnerId === game.teams[0].id ? 'text-lg text-success' : ''}
+					>{game.teams[0].name}</span
+				>
+				<span>VS</span>
+				<span class={game.winnerId === game.teams[1].id ? 'text-lg text-success' : ''}
+					>{game.teams[1].name}</span
+				>
+			</a>
+		{/each}
+	{/if}
+</div>

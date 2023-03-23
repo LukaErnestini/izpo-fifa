@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AttemptsPlayers, GamePopulated } from '$lib/types/types';
+	import type { AttemptsPlayers, GamePopulated, GamesTeams } from '$lib/types/types';
 	import type { Attempt, Foul, Player } from '@prisma/client';
 	import AttemptsForm from './AttemptsForm.svelte';
 	import EventsLog from './EventsLog.svelte';
@@ -10,10 +10,11 @@
 	export let players: Player[] = [];
 	export let attempts: AttemptsPlayers = [];
 	export let fouls: (Foul & { player: Player })[] = [];
+	export let games: GamesTeams;
 </script>
 
 {#if !activeGame}
-	<CreateGame {players} />
+	<CreateGame {players} {games} />
 	<form action="?/end" method="post">
 		<div class="flex w-full justify-center">
 			<input type="hidden" name="id" value={gameDayId} />

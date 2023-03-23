@@ -13,3 +13,10 @@ export type AttemptsPlayers =
 			shooter: Player;
 	  })[]
 	| undefined;
+
+export type GamesTeams =
+	| (Game & {
+			teams: Team[];
+			winner: Team | null;
+	  })[]
+	| undefined;
