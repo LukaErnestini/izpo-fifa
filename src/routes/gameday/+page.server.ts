@@ -224,10 +224,11 @@ export const actions = {
 						activeGame.teams[0].players.filter((playa) => playa.id === attempt.shooter.id).length
 					) {
 						// The shooter is on teamA
-						scoreTeamA++;
+						if (attempt.autogoal) scoreTeamB++;
+						else scoreTeamA++;
 					} else {
-						// The shooter is on teamB
-						scoreTeamB++;
+						if (attempt.autogoal) scoreTeamA++;
+						else scoreTeamB++;
 					}
 				}
 			}
