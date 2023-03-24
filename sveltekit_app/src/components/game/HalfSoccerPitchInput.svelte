@@ -5,7 +5,7 @@
 	export let y: number | null = null;
 	export let distance: number | null = null;
 
-	const soccerPitchWidth = 70; //meters
+	const soccerPitchWidth = 65; //meters
 	const soccerPitchTouchlineHalf = 50;
 	const goalX = soccerPitchWidth / 2;
 	const goalY = 0;
