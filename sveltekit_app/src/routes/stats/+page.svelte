@@ -1,7 +1,8 @@
 <script lang="ts">
+	import GoalsAttemptsByTime from '../../components/stats/GoalsAttemptsByTime.svelte';
 	import type { PageData } from './$types';
-
-	// export let data: PageData;
 </script>
 
-<p>Coming soon...</p>
+<main>
+	<GoalsAttemptsByTime />
+</main>
