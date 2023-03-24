@@ -112,7 +112,7 @@
 					bind:selected={goalie}
 				/>
 			{/if}
-			<ToggleInput bind:checked={autogoal} label="Auto Goal" name="autogoal" />
+			<ToggleInput bind:checked={autogoal} label="Own Goal" name="autogoal" />
 			<div class="divider" />
 			<CardsSection />
 		</div>
