@@ -1,10 +1,9 @@
-import { assets, base } from '$app/paths';
 import { prisma } from '$lib/server/db';
 import { fail, redirect } from '@sveltejs/kit';
 import { nanoid } from 'nanoid';
-import path, { dirname } from 'path';
 import type { Actions, PageServerLoad } from './$types';
-import { S3 } from 'aws-sdk';
+import aws from 'aws-sdk';
+const { S3 } = aws;
 import { env } from '$env/dynamic/private';
 
 export const load = (async ({ params }) => {
