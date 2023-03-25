@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Line } from 'svelte-chartjs';
+	import { PUBLIC_PYTHON_API } from '$env/static/public';
 
 	import {
 		Chart as ChartJS,
@@ -44,7 +45,7 @@
 	}
 
 	async function fetchData() {
-		const response = await fetch('http://localhost:5000/attemptsGoalsByTime');
+		const response = await fetch(PUBLIC_PYTHON_API + '/attemptsGoalsByTime');
 		const data: AttemptsGoalsData[] = await response.json();
 		console.log(data);
 		chartData.labels = data.map((item) => item.time);
