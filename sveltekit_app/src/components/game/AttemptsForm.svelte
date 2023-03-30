@@ -12,6 +12,7 @@
 	import HalfSoccerPitchInput from './HalfSoccerPitchInput.svelte';
 
 	export let activeGame: GamePopulated;
+	export let latestTime: number;
 
 	let gamePlayers: Player[] = [];
 	let shooter: number | null;
@@ -29,6 +30,7 @@
 	let shooterTeammates: Player[] = [];
 	let goaliePlayers: Player[] = [];
 	let expanded = false;
+	$: time = latestTime;
 
 	if (activeGame) {
 		gamePlayers = [...activeGame.teams[0].players, ...activeGame.teams[1].players];
@@ -87,7 +89,7 @@
 	<div class="form-control m-4">
 		<ToggleInput bind:checked={goal} label="Goal" name="goal" />
 		<ToggleInput bind:checked={onTarget} label="On Target" name="onTarget" disabled={goal} />
-		<TimeInput {time} />
+		<TimeInput {time} {latestTime} />
 		<SelectPlayersInput
 			inputName="shooter"
 			label="Shooter"

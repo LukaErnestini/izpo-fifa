@@ -11,6 +11,14 @@
 	export let attempts: AttemptsPlayers = [];
 	export let fouls: (Foul & { player: Player })[] = [];
 	export let games: GamesTeams;
+
+	let latestTime = 0;
+
+	$: if (attempts && attempts.length) {
+		latestTime = attempts[0].time;
+	} else {
+		latestTime = 0;
+	}
 </script>
 
 {#if !activeGame}
@@ -22,7 +30,7 @@
 		</div>
 	</form>
 {:else}
-	<AttemptsForm {activeGame} />
+	<AttemptsForm {activeGame} {latestTime} />
 	<EventsLog {attempts} {fouls} />
 	<form action="?/endGame" method="post">
 		<div class="flex w-full justify-center">

@@ -3,7 +3,10 @@
 	import { sineIn } from 'svelte/easing';
 
 	export let time = 0;
+	export let latestTime: number;
+
 	let buttonHeld = false;
+
 	const interval = tweened(200, { duration: 2000, easing: sineIn });
 
 	async function changeNum(n: number) {
@@ -12,8 +15,8 @@
 		buttonHeld = true;
 		while (buttonHeld) {
 			time += n;
-			if (time < 0) {
-				time = 0;
+			if (time < latestTime) {
+				time = latestTime;
 				buttonHeld = false;
 				break;
 			} else if (time > 130) {
@@ -47,7 +50,7 @@
 			name="time"
 			class="input input-bordered input-sm w-24"
 			max="130"
-			min="0"
+			min={latestTime}
 		/>
 		<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 		<button

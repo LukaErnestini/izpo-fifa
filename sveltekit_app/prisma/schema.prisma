@@ -68,7 +68,7 @@ model Gameday {
 
 model Attempt {
   id         Int     @id @default(autoincrement())
-  time       Int?
+  time       Int
   distance   Float?
   x          Float?
   y          Float?
