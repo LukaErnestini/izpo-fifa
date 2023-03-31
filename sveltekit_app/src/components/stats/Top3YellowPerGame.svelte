@@ -19,7 +19,7 @@
 	let stats: string[];
 
 	async function fetchData() {
-		const response = await fetch(PUBLIC_PYTHON_API + '/cardsPerGame?limit=3');
+		const response = await fetch(PUBLIC_PYTHON_API + '/cardsPerGame?limit=3&color=yellow');
 		const data: Data[] = await response.json();
 		players = data.map((e) => {
 			return { name: e.name, imageUri: e.imageUri };
@@ -38,7 +38,7 @@
 	<div class="text-2xl p-2">
 		Most
 		<span class="inline-block">
-			<Icon icon="tabler:rectangle-vertical-filled" color="red" width="24" />
+			<Icon icon="tabler:rectangle-vertical-filled" color="yellow" width="24" />
 		</span>
 		cards awarded per game played:
 	</div>

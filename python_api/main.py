@@ -101,13 +101,16 @@ def attemptsGoalsByTime():
     return jsonify(time_data.to_dict(orient="records"))
 
 
-@app.route('/redCardsPerGame')
+@app.route('/cardsPerGame')
 def red_cards_per_game():
     limit = request.args.get('limit')
+    color = request.args.get('color')
+    if color != 'yellow':
+        color = 'red'
     players_in_team_df = get_players_in_team_df()
     teams_in_game_df = get_teams_in_game_df()
     players_df = get_players_df()
-    stmt = select(Foul).where(Foul.c.card == 'red')
+    stmt = select(Foul).where(Foul.c.card == color)
     with engine.connect() as conn:
         result = conn.execute(stmt)
         red_fouls_df = pd.DataFrame(result.fetchall(), columns=result.keys())
