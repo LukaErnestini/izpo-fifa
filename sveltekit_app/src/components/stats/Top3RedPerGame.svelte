@@ -33,4 +33,4 @@
 	});
 </script>
 
-<Podium {players} {stats} />
+<Podium {players} {stats} title="Most red cards awarded per game played:" />

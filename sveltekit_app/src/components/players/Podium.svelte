@@ -5,45 +5,51 @@
 
 	export let players: Partial<Player>[] | undefined[] = [undefined, undefined, undefined];
 	export let stats: string[];
+	export let title = 'Podium';
 </script>
 
-<div class="flex items-end">
-	<div>
-		{#if players[1]}
-			<div class="flex justify-center stat-value mb-4">
-				{stats[1]}
-			</div>
-			<div class="flex justify-center pb-2">
-				<PlayerAvatarSelect width="5rem" imageUri={players[1].imageUri} name={players[1].name} />
-			</div>{/if}
-		<div class="podium podium-second">
-			<Icon icon="noto:2nd-place-medal" width="3rem" />
-		</div>
+<div class="block max-w-min">
+	<div class="text-2xl p-2">
+		{title}
 	</div>
-	<div>
-		{#if players[0]}
-			<div class="flex justify-center stat-value mb-4">
-				{stats[0]}
+	<div class="flex items-end">
+		<div>
+			{#if players[1]}
+				<div class="flex justify-center stat-value mb-4">
+					{stats[1]}
+				</div>
+				<div class="flex justify-center pb-2">
+					<PlayerAvatarSelect width="5rem" imageUri={players[1].imageUri} name={players[1].name} />
+				</div>{/if}
+			<div class="podium podium-second">
+				<Icon icon="noto:2nd-place-medal" width="64" />
 			</div>
-			<div class="flex justify-center pb-2">
-				<PlayerAvatarSelect width="5rem" imageUri={players[0].imageUri} name={players[0].name} />
-			</div>
-		{/if}
-		<div class="podium podium-first">
-			<Icon icon="noto:1st-place-medal" width="3rem" />
 		</div>
-	</div>
-	<div>
-		{#if players[2]}
-			<div class="flex justify-center stat-value mb-4">
-				{stats[2]}
+		<div>
+			{#if players[0]}
+				<div class="flex justify-center stat-value mb-4">
+					{stats[0]}
+				</div>
+				<div class="flex justify-center pb-2">
+					<PlayerAvatarSelect width="5rem" imageUri={players[0].imageUri} name={players[0].name} />
+				</div>
+			{/if}
+			<div class="podium podium-first">
+				<Icon icon="noto:1st-place-medal" width="64" />
 			</div>
-			<div class="flex justify-center pb-2">
-				<PlayerAvatarSelect width="5rem" imageUri={players[2].imageUri} name={players[2].name} />
+		</div>
+		<div>
+			{#if players[2]}
+				<div class="flex justify-center stat-value mb-4">
+					{stats[2]}
+				</div>
+				<div class="flex justify-center pb-2">
+					<PlayerAvatarSelect width="5rem" imageUri={players[2].imageUri} name={players[2].name} />
+				</div>
+			{/if}
+			<div class="podium podium-third">
+				<Icon icon="noto:3rd-place-medal" width="64" />
 			</div>
-		{/if}
-		<div class="podium podium-third">
-			<Icon icon="noto:3rd-place-medal" width="3rem" />
 		</div>
 	</div>
 </div>
