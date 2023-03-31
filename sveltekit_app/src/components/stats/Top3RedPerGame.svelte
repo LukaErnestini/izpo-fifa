@@ -3,6 +3,7 @@
 	import { PUBLIC_PYTHON_API } from '$env/static/public';
 	import Podium from '../players/Podium.svelte';
 	import type { Player } from '@prisma/client';
+	import Icon from '@iconify/svelte';
 
 	interface Data {
 		count: number;
@@ -33,4 +34,14 @@
 	});
 </script>
 
-<Podium {players} {stats} title="Most red cards awarded per game played:" />
+<div class="block max-w-min">
+	<div class="text-2xl p-2">
+		Most
+		<span class="inline-block">
+			<Icon icon="tabler:rectangle-vertical-filled" color="red" width="24" />
+		</span>
+		cards awarded per game played:
+	</div>
+
+	<Podium {players} {stats} />
+</div>

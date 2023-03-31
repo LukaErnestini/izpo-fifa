@@ -5,7 +5,7 @@
 	import type { PageData } from './$types';
 </script>
 
-<main class="container flex flex-wrap gap-4 justify-center">
+<main class="container flex flex-wrap gap-8 justify-center">
 	<div class="max-w-xl">
 		<GoalsAttemptsByTime />
 	</div>
