@@ -47,7 +47,6 @@
 	async function fetchData() {
 		const response = await fetch(PUBLIC_PYTHON_API + '/attemptsGoalsByTime');
 		const data: AttemptsGoalsData[] = await response.json();
-		console.log(data);
 		chartData.labels = data.map((item) => item.time);
 		chartData.datasets[0].data = data.map((item) => item.avg_attempts);
 		chartData.datasets[1].data = data.map((item) => item.avg_goals);

@@ -17,7 +17,7 @@
 		</div>
 	</div>
 
-	<span class="uppercase text-xs flex justify-center">
+	<span class="uppercase text-xs flex justify-center mt-2">
 		{name}
 	</span>
 </div>
