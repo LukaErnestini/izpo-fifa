@@ -73,10 +73,8 @@ def usersGoals():
     goals_by_player_list = goals_by_player.to_dict(orient="records")
     return jsonify(goals_by_player_list)
 
-# TODO
 
-
-@app.route('/stats/player/<id>')
+@app.route('/stats/player/<id>')  # TODO
 def playerStats(id):
     return id
 
@@ -101,6 +99,37 @@ def attemptsGoalsByTime():
     return jsonify(time_data.to_dict(orient="records"))
 
 
+@app.route('/goalsPerGame')
+def goals_per_game():
+    min_game_count = request.args.get('min_game_count')
+    if min_game_count is None:
+        abort(400)
+    min_game_count = int(min_game_count)
+    players_in_team_df = get_players_in_team_df()
+    teams_in_game_df = get_teams_in_game_df()
+    players_df = get_players_df()
+    stmt = select(Attempt).where(Attempt.c.goal == True)
+    with engine.connect() as conn:
+        result = conn.execute(stmt)
+        attempts_goals = pd.DataFrame(result.fetchall(), columns=result.keys())
+    goals_by_player_id = attempts_goals.groupby(
+        'shooterId').size().reset_index(name='count')
+    player_games = pd.merge(players_in_team_df, teams_in_game_df, on='teamId')
+    player_games_count = player_games.groupby(
+        'playerId').gameId.nunique().reset_index(name='gamesPlayed')
+    player_games_count = player_games_count.loc[player_games_count['gamesPlayed']
+                                                >= min_game_count]
+    goals_per_game = pd.merge(goals_by_player_id, player_games_count,
+                              left_on='shooterId', right_on='playerId').drop('shooterId', axis=1)
+    goals_per_game['goalsPerGame'] = goals_per_game['count'] / \
+        goals_per_game['gamesPlayed']
+    goals_per_game = pd.merge(goals_per_game, players_df,
+                              left_on='playerId', right_on='id').drop('playerId', axis=1)
+    goals_per_game_sorted = goals_per_game.sort_values(
+        'goalsPerGame', ascending=False)
+    return jsonify(goals_per_game_sorted.to_dict(orient='records'))
+
+
 @app.route('/cardsPerGame')
 def red_cards_per_game():
     limit = request.args.get('limit')
@@ -114,13 +143,11 @@ def red_cards_per_game():
     with engine.connect() as conn:
         result = conn.execute(stmt)
         red_fouls_df = pd.DataFrame(result.fetchall(), columns=result.keys())
-    red_cards = red_fouls_df[red_fouls_df.card == 'red'].groupby(
+    red_cards = red_fouls_df.groupby(
         'playerId').size().reset_index(name='count')
     player_games = pd.merge(players_in_team_df, teams_in_game_df, on='teamId')
     player_games_count = player_games.groupby(
-        'playerId').gameId.nunique().reset_index()
-    player_games_count = player_games_count.rename(
-        columns={'gameId': 'gamesPlayed'})
+        'playerId').gameId.nunique().reset_index(name='gamesPlayed')
     red_cards_per_game = pd.merge(player_games_count, red_cards, on='playerId')
     red_cards_per_game['red_cards_per_game'] = red_cards_per_game['count'] / \
         red_cards_per_game['gamesPlayed']
