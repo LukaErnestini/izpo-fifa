@@ -1,8 +1,12 @@
 <script lang="ts">
 	import GoalsAttemptsByTime from '../../components/stats/GoalsAttemptsByTime.svelte';
+	import Table from '../../components/stats/Table.svelte';
 	import Top3GoalsPerGame from '../../components/stats/Top3GoalsPerGame.svelte';
 	import Top3RedPerGame from '../../components/stats/Top3RedPerGame.svelte';
 	import Top3YellowPerGame from '../../components/stats/Top3YellowPerGame.svelte';
+
+	export let data;
+	let teams = data.teams;
 </script>
 
 <main class="container flex flex-wrap gap-8 justify-center">
@@ -12,4 +16,6 @@
 	<Top3RedPerGame />
 	<Top3YellowPerGame />
 	<Top3GoalsPerGame />
+
+	<Table data={teams} />
 </main>
