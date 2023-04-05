@@ -41,10 +41,13 @@ model Game {
   fouls      Foul[]
   Gameday    Gameday?  @relation(fields: [gamedayId], references: [id])
   gamedayId  Int?
-  teams      Team[]    @relation("teamsInGame")
   scoreTeamA Int       @default(0)
   scoreTeamB Int       @default(0)
-  winner     Team?     @relation(fields: [winnerId], references: [id])
+  teamA      Team      @relation("teamA", fields: [teamAId], references: [id])
+  teamAId    Int
+  teamB      Team      @relation("teamB", fields: [teamBId], references: [id])
+  teamBId    Int
+  winner     Team?     @relation("winner", fields: [winnerId], references: [id])
   winnerId   Int?
   finished   Boolean   @default(false)
 }
@@ -54,8 +57,9 @@ model Team {
   name    String?
   color   String?
   players Player[]
-  games   Game[]   @relation("teamsInGame")
-  Game    Game[]
+  teamA   Game[]   @relation("teamA")
+  teamB   Game[]   @relation("teamB")
+  winner  Game[]   @relation("winner")
 }
 
 model Gameday {
