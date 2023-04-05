@@ -69,12 +69,12 @@
 	{#if games}
 		{#each games as game}
 			<a href="/game/{game.id}" class="block">
-				<span class={game.winnerId === game.teams[0].id ? 'text-lg text-success' : ''}
-					>{game.teams[0].name}</span
+				<span class={game.winnerId === game.teamA.id ? 'text-lg text-success' : ''}
+					>{game.teamA.name}</span
 				>
 				<span>VS</span>
-				<span class={game.winnerId === game.teams[1].id ? 'text-lg text-success' : ''}
-					>{game.teams[1].name}</span
+				<span class={game.winnerId === game.teamB.id ? 'text-lg text-success' : ''}
+					>{game.teamB.name}</span
 				>
 			</a>
 		{/each}

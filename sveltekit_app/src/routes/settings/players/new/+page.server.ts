@@ -2,6 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { prisma } from '$lib/server/db';
 import { fail, redirect } from '@sveltejs/kit';
 import { connect } from 'http2';
+import { createTeamName, genRanHex } from '$lib/util';
 
 export const load = (async () => {
 	return {};
@@ -23,11 +24,13 @@ export const actions = {
 					name
 				}
 			});
-			const genRanHex = (size: number) =>
-				[...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
 			prisma.team
 				.create({
-					data: { color: '#' + genRanHex(6), players: { connect: [{ id: newPlayer.id }] } }
+					data: {
+						color: '#' + genRanHex(6),
+						name: createTeamName([newPlayer.name]),
+						players: { connect: [{ id: newPlayer.id }] }
+					}
 				})
 				.then();
 			for (let i = 0; i < players.length; i++) {
@@ -35,6 +38,7 @@ export const actions = {
 					.create({
 						data: {
 							color: '#' + genRanHex(6),
+							name: createTeamName([newPlayer.name, players[i].name]),
 							players: {
 								connect: [{ id: players[i].id }, { id: newPlayer.id }]
 							}

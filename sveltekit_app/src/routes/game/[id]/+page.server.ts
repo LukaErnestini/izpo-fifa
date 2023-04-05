@@ -8,11 +8,8 @@ export const load = (async ({ params }) => {
 		include: {
 			attempts: { include: { shooter: true, assisted: true } },
 			fouls: true,
-			teams: {
-				include: {
-					players: true
-				}
-			},
+			teamA: { include: { players: true } },
+			teamB: { include: { players: true } },
 			winner: true
 		}
 	});
@@ -20,9 +17,10 @@ export const load = (async ({ params }) => {
 		throw error(404, { message: 'Game not found' });
 	}
 	// Add teamId to each attempt
+	const teams = [game.teamA, game.teamB];
 	game.attempts = game.attempts.map((attempt) => {
 		// Find the team the shooter belongs to
-		const team = game.teams.find((team) =>
+		const team = teams.find((team) =>
 			team.players.some((player) => player.id === attempt.shooterId)
 		);
 		return {

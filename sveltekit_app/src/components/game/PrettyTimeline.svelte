@@ -35,8 +35,7 @@
 
 			{#if assisted}
 				<!-- <PlayerAvatarSelect name={assisted.name} imageUri={assisted.imageUri} width="2rem" /> -->
-				<p class="text-sm">assisted by:</p>
-				<p>{assisted.name}</p>
+				<p class="text-sm">assisted by: {assisted.name}</p>
 			{/if}
 		</span>
 	</div>

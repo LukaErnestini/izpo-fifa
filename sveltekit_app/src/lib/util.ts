@@ -15,3 +15,15 @@ export const hexToRGBA = (hex: string, alpha = 1) => {
 
 	return `rgba(${rgba.join(', ')})`;
 };
+
+export const createTeamName = (strings: string[]): string => {
+	const extractThreeChars = (str: string): string => {
+		let chars = str.slice(0, 3);
+		return chars.charAt(0).toUpperCase() + chars.slice(1).toLowerCase();
+	};
+
+	return strings.map(extractThreeChars).join('');
+};
+
+export const genRanHex = (size: number) =>
+	[...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');

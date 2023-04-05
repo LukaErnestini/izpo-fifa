@@ -4,6 +4,9 @@
 	export let selected = false;
 	export let imageUri: string | null | undefined =
 		'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg';
+	if (!imageUri) {
+		imageUri = 'https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg';
+	}
 </script>
 
 <div class="px-1 w-min">

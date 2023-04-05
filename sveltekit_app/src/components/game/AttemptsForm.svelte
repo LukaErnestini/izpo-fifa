@@ -33,18 +33,14 @@
 	$: time = latestTime;
 
 	if (activeGame) {
-		gamePlayers = [...activeGame.teams[0].players, ...activeGame.teams[1].players];
+		gamePlayers = [...activeGame.teamA.players, ...activeGame.teamB.players];
 	}
 
-	$: shooterTeammates = getTeammates(
-		activeGame?.teams[0].players,
-		activeGame?.teams[1].players,
-		shooter
-	);
+	$: shooterTeammates = getTeammates(activeGame?.teamA.players, activeGame?.teamB.players, shooter);
 
 	$: goaliePlayers = getTeammates(
-		activeGame?.teams[0].players,
-		activeGame?.teams[1].players,
+		activeGame?.teamA.players,
+		activeGame?.teamB.players,
 		shooter,
 		true
 	);

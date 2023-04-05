@@ -7,7 +7,8 @@ export const load = (async () => {
 		include: {
 			games: {
 				include: {
-					teams: true,
+					teamA: true,
+					teamB: true,
 					winner: true
 				},
 				orderBy: { id: 'asc' }
@@ -27,7 +28,8 @@ export const load = (async () => {
 			}
 		},
 		include: {
-			teams: { include: { players: true } },
+			teamA: { include: { players: true } },
+			teamB: { include: { players: true } },
 			attempts: {
 				orderBy: { id: 'desc' },
 				include: { shooter: true }

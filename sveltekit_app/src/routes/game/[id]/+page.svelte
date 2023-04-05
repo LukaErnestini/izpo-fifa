@@ -5,7 +5,7 @@
 	export let data;
 	let game = data.game;
 	let attempts = data.game.attempts;
-	let teams = data.game.teams;
+	let teams = [data.game.teamA, data.game.teamB];
 
 	let deleteClicked = false;
 	let deleteActive = false;
@@ -106,8 +106,8 @@
 	gameIsActive={true}
 	scoreTeamA={game.scoreTeamA}
 	scoreTeamB={game.scoreTeamB}
-	teamA={game.teams[0]}
-	teamB={game.teams[1]}
+	teamA={game.teamA}
+	teamB={game.teamB}
 />
 
 <PrettyTimeline {attempts} {teams} />

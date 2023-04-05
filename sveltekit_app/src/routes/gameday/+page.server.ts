@@ -89,6 +89,9 @@ export const actions = {
 			const team1 = teams1.find((team) => {
 				if (team.players.length === team1players.length) return team;
 			});
+			if (!team1) {
+				throw fail(400);
+			}
 			const teams2 = await prisma.team.findMany({
 				where: { players: { every: { id: { in: team2players } } } },
 				include: { players: true }
@@ -96,13 +99,17 @@ export const actions = {
 			const team2 = teams2.find((team) => {
 				if (team.players.length === team2players.length) return team;
 			});
+			if (!team2) {
+				throw fail(400);
+			}
 			const gameday = await prisma.gameday.findFirst({ where: { active: true } });
 			const game = await prisma.game.create({
 				data: {
 					gamedayId: gameday?.id,
-					teams: { connect: [{ id: team1?.id }, { id: team2?.id }] }
+					teamAId: team1.id,
+					teamBId: team2.id
 				},
-				include: { teams: true }
+				include: { teamA: true, teamB: true }
 			});
 			return { game };
 		} catch (error) {
@@ -162,16 +169,16 @@ export const actions = {
 						Gameday: activeGameday
 					}
 				},
-				include: { teams: true }
+				include: { teamA: true, teamB: true }
 			});
 			if (!activeGame) {
 				return fail(404, { error: 'No active game found.' });
 			}
 			let winnerId: number | null = null;
 			if (activeGame.scoreTeamA > activeGame.scoreTeamB) {
-				winnerId = activeGame.teams[0].id;
+				winnerId = activeGame.teamAId;
 			} else if (activeGame.scoreTeamA < activeGame.scoreTeamB) {
-				winnerId = activeGame.teams[1].id;
+				winnerId = activeGame.teamBId;
 			}
 			const game = await prisma.game.update({
 				where: { id: activeGame?.id },
@@ -220,7 +227,8 @@ export const actions = {
 				},
 				include: {
 					attempts: { include: { shooter: true } },
-					teams: { include: { players: true } }
+					teamA: { include: { players: true } },
+					teamB: { include: { players: true } }
 				}
 			});
 
@@ -231,9 +239,7 @@ export const actions = {
 			// Loop through the attempts and tally the scores
 			for (const attempt of activeGame.attempts) {
 				if (attempt.goal) {
-					if (
-						activeGame.teams[0].players.filter((playa) => playa.id === attempt.shooter.id).length
-					) {
+					if (activeGame.teamA.players.filter((playa) => playa.id === attempt.shooter.id).length) {
 						// The shooter is on teamA
 						if (attempt.autogoal) scoreTeamB++;
 						else scoreTeamA++;

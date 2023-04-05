@@ -8,8 +8,8 @@
 	gameIsActive={data.activeGame ? true : false}
 	scoreTeamA={data.activeGame?.scoreTeamA}
 	scoreTeamB={data.activeGame?.scoreTeamB}
-	teamA={data.activeGame?.teams[0]}
-	teamB={data.activeGame?.teams[1]}
+	teamA={data.activeGame?.teamA}
+	teamB={data.activeGame?.teamB}
 />
 
 <slot><!-- optional fallback --></slot>
