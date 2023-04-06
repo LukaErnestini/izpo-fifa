@@ -55,7 +55,7 @@
 		border-color: red;
 	} */
 	.podium {
-		width: 150px;
+		width: 120px;
 		border-style: solid;
 		border-color: #ccc;
 		border-width: 8px;

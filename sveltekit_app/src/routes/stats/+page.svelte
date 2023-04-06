@@ -7,15 +7,24 @@
 
 	export let data;
 	let teams = data.teams;
+	let players = data.players;
+	let shots = data.shots;
 </script>
 
-<main class="container flex flex-wrap gap-8 justify-center">
+<main class="container flex flex-wrap gap-8 justify-center p-4">
 	<div class="max-w-xl">
 		<GoalsAttemptsByTime />
 	</div>
 	<Top3RedPerGame />
 	<Top3YellowPerGame />
 	<Top3GoalsPerGame />
-
-	<Table data={teams} />
+	<div class="min-w-full p-2">
+		<Table data={teams} />
+	</div>
+	<div class="min-w-full p-2">
+		<Table data={players} />
+	</div>
+	<div class="min-w-full p-2">
+		<Table data={shots} />
+	</div>
 </main>

@@ -12,6 +12,7 @@ from config import DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME, DEBUG
 
 
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
 CORS(app)
 api = Api(app)
 
@@ -330,6 +331,9 @@ def overall_tables():
     dfShots.index = np.arange(len(dfShots.index))
     dfShots["Rank"] = dfShots.index + 1
     data = {}
+    dfTeamOverall.drop(columns=['TeamID'], inplace=True)
+    dfPlayerOverall.drop(columns=['PlayerID'], inplace=True)
+    dfShots.drop(columns=['PlayerID'], inplace=True)
     data['teams'] = dfTeamOverall.to_dict(orient="records")
     data['players'] = dfPlayerOverall.to_dict(orient="records")
     data['shots'] = dfShots.to_dict(orient="records")
