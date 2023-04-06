@@ -4,11 +4,20 @@ from flask_restful import Api, Resource
 import pandas as pd
 import numpy as np
 import collections
+import os
 
 from sqlalchemy import create_engine, select, text
 from sqlalchemy import MetaData, Table
 
 from config import DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME, DEBUG
+
+
+# Get values from environment variables, fall back to config.py if not set
+db_user = os.environ.get('DB_USER', DB_USER)
+db_password = os.environ.get('DB_PASSWORD', DB_PASSWORD)
+db_host = os.environ.get('DB_HOST', DB_HOST)
+db_port = os.environ.get('DB_PORT', DB_PORT)
+db_name = os.environ.get('DB_NAME', DB_NAME)
 
 
 app = Flask(__name__)
@@ -17,7 +26,7 @@ CORS(app)
 api = Api(app)
 
 # Configure SQLAlchemy
-DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+DATABASE_URL = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 engine = create_engine(DATABASE_URL)
 metadata_obj = MetaData()
 metadata_obj.reflect(bind=engine)
@@ -334,6 +343,10 @@ def overall_tables():
     dfTeamOverall.drop(columns=['TeamID'], inplace=True)
     dfPlayerOverall.drop(columns=['PlayerID'], inplace=True)
     dfShots.drop(columns=['PlayerID'], inplace=True)
+    # Replace NaN values with None in all DataFrames
+    dfTeamOverall = dfTeamOverall.replace({np.nan: None})
+    dfTeamOverall = dfPlayerOverall.replace({np.nan: None})
+    dfShots = dfShots.replace({np.nan: None})
     data['teams'] = dfTeamOverall.to_dict(orient="records")
     data['players'] = dfPlayerOverall.to_dict(orient="records")
     data['shots'] = dfShots.to_dict(orient="records")
