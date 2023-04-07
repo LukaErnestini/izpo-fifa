@@ -141,7 +141,7 @@ export const actions = {
 				data: {
 					goal,
 					autogoal,
-					onTarget,
+					onTarget: goal ? true : onTarget,
 					penalty,
 					time,
 					x,
