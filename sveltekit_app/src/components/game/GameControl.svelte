@@ -31,15 +31,15 @@
 	let teamsData: any[] = [];
 	let playersData: any[] = [];
 	let shotsData: any[] = [];
-	async function fetchTables(games: any) {
+	async function fetchTables() {
 		const response = await fetch(`${PUBLIC_PYTHON_API}/overallTables?gameday_id=${gameDayId}`);
-		const data: Data = await response.json();
-		teamsData = data.teams;
-		playersData = data.players;
-		shotsData = data.shots;
+		const { teams, players, shots }: Data = await response.json();
+		teamsData = teams;
+		playersData = players;
+		shotsData = shots;
 	}
 	onMount(async () => {
-		fetchTables(games);
+		fetchTables();
 	});
 </script>
 

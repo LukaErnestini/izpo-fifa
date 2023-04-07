@@ -2,10 +2,10 @@
 	import Icon from '@iconify/svelte';
 	import GameControl from '../../components/game/GameControl.svelte';
 	import CreateGd from '../../components/gameday/CreateGD.svelte';
-	import type { ActionData, PageData } from './$types';
+	import { formatDate } from '$lib/util';
 
-	export let data: PageData;
-	export let form: ActionData;
+	export let data;
+	export let form;
 	let gameday = form?.gameday || data.gameday;
 </script>
 
@@ -30,4 +30,9 @@
 	/>
 {:else}
 	<CreateGd players={data.players} />
+	{#if data.finishedGamedays}
+		{#each data.finishedGamedays as gameday}
+			<a href="/gameday/{gameday.id}" class="block p-2">{formatDate(gameday.createdAt)}</a>
+		{/each}
+	{/if}
 {/if}

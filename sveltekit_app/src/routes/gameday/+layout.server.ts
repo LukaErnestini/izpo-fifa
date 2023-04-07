@@ -16,9 +16,23 @@ export const load = (async () => {
 			players: true
 		}
 	});
+	const finishedGamedays = await prisma.gameday.findMany({
+		where: { active: false },
+		include: {
+			games: {
+				include: {
+					teamA: true,
+					teamB: true,
+					winner: true
+				},
+				orderBy: { id: 'asc' }
+			},
+			players: true
+		}
+	});
 	if (!gameday) {
 		const players = await prisma.player.findMany();
-		return { players, gameday: null, activeGame: null };
+		return { players, gameday: null, activeGame: null, finishedGamedays };
 	}
 	const activeGame = await prisma.game.findFirst({
 		where: {
@@ -41,5 +55,5 @@ export const load = (async () => {
 		}
 	});
 	// console.log(activeGame?.attempts.length);
-	return { gameday, activeGame };
+	return { gameday, activeGame, finishedGamedays };
 }) satisfies LayoutServerLoad;
