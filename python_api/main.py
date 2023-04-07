@@ -349,7 +349,7 @@ def overall_tables():
     dfShots.drop(columns=['PlayerID'], inplace=True)
     # Replace NaN values with None in all DataFrames
     dfTeamOverall = dfTeamOverall.replace({np.nan: None})
-    dfTeamOverall = dfPlayerOverall.replace({np.nan: None})
+    dfPlayerOverall = dfPlayerOverall.replace({np.nan: None})
     dfShots = dfShots.replace({np.nan: None})
     data['teams'] = dfTeamOverall.to_dict(orient="records")
     data['players'] = dfPlayerOverall.to_dict(orient="records")
