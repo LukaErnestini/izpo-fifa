@@ -4,6 +4,9 @@
 	import AttemptsForm from './AttemptsForm.svelte';
 	import EventsLog from './EventsLog.svelte';
 	import CreateGame from './CreateGame.svelte';
+	import { PUBLIC_PYTHON_API } from '$env/static/public';
+	import Table from '../stats/Table.svelte';
+	import { onMount } from 'svelte';
 
 	export let gameDayId: number;
 	export let activeGame: GamePopulated;
@@ -19,10 +22,38 @@
 	} else {
 		latestTime = 0;
 	}
+
+	interface Data {
+		players: any[];
+		teams: any[];
+		shots: any[];
+	}
+	let teamsData: any[] = [];
+	let playersData: any[] = [];
+	let shotsData: any[] = [];
+	async function fetchTables(games: any) {
+		const response = await fetch(`${PUBLIC_PYTHON_API}/overallTables?gameday_id=${gameDayId}`);
+		const data: Data = await response.json();
+		teamsData = data.teams;
+		playersData = data.players;
+		shotsData = data.shots;
+	}
+	onMount(async () => {
+		fetchTables(games);
+	});
 </script>
 
 {#if !activeGame}
 	<CreateGame {players} {games} />
+	<div class="min-w-full p-2">
+		<Table data={teamsData} />
+	</div>
+	<div class="min-w-full p-2">
+		<Table data={playersData} />
+	</div>
+	<div class="min-w-full p-2">
+		<Table data={shotsData} />
+	</div>
 	<form action="?/end" method="post">
 		<div class="flex w-full justify-center">
 			<input type="hidden" name="id" value={gameDayId} />
