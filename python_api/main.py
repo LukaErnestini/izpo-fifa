@@ -161,6 +161,9 @@ def goals_per_game():
 @app.route('/overallTables')
 def overall_tables():
     dfGame = get_games_df()
+    gamedayId = request.args.get('gameday_id')
+    if (gamedayId):
+        dfGame = dfGame[dfGame['gamedayId'] == int(gamedayId)]
     allTeamIds = np.concatenate((dfGame["teamAId"], dfGame["teamBId"]))
     allTeamIdsUniq = np.unique(allTeamIds)
     MPcounter = collections.Counter(allTeamIds)
@@ -306,6 +309,7 @@ def overall_tables():
     dfPlayerOverall["Rank"] = dfPlayerOverall.index + 1
     dfPlayerOverall.replace(np.inf, 0, inplace=True)
     df = get_attempts_df()
+    df = df[df['gameId'].isin(dfGame['id'])]
     dfShots = pd.DataFrame(columns=["Rank", "PlayerID", "Player",
                            "MP", "G", "G/MP", "A", "A/MP", "S", "S/MP", "SoT/MP", "S/G"])
     dfShots["Player"] = dfPlayerOverall["Player"]
