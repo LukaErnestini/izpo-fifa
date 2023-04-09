@@ -39,7 +39,8 @@
 	};
 
 	interface AttemptsGoalsData {
-		time: string;
+		time_bin: string;
+		bin_mid: number;
 		avg_attempts: number;
 		avg_goals: number;
 	}
@@ -47,7 +48,7 @@
 	async function fetchData() {
 		const response = await fetch(PUBLIC_PYTHON_API + '/attemptsGoalsByTime');
 		const data: AttemptsGoalsData[] = await response.json();
-		chartData.labels = data.map((item) => item.time);
+		chartData.labels = data.map((item) => item.bin_mid);
 		chartData.datasets[0].data = data.map((item) => item.avg_attempts);
 		chartData.datasets[1].data = data.map((item) => item.avg_goals);
 	}
