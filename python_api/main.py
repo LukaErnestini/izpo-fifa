@@ -105,14 +105,18 @@ def attemptsGoalsByTime():
     with engine.connect() as conn:
         result = conn.execute(stmt)
         df_attempts = pd.DataFrame(result.fetchall(), columns=result.keys())
+    df_attempts['time_bin'] = pd.cut(
+        df_attempts['time'], bins=np.arange(0, df_attempts['time'].max() + 1, 5))
     attempts_by_time = df_attempts.groupby(
-        "time").size().reset_index(name="attempts")
+        "time_bin").size().reset_index(name="attempts")
     goals_by_time = df_attempts[df_attempts["goal"]].groupby(
-        "time").size().reset_index(name="goals")
-    time_data = pd.merge(attempts_by_time, goals_by_time, on="time")
+        "time_bin").size().reset_index(name="goals")
+    time_data = pd.merge(attempts_by_time, goals_by_time, on="time_bin")
     total_games = df_attempts["gameId"].nunique()
     time_data["avg_attempts"] = time_data["attempts"] / total_games
     time_data["avg_goals"] = time_data["goals"] / total_games
+    time_data['bin_mid'] = time_data['time_bin'].apply(lambda x: x.mid)
+    time_data['time_bin'] = time_data['time_bin'].astype(str)
     return jsonify(time_data.to_dict(orient="records"))
 
 
