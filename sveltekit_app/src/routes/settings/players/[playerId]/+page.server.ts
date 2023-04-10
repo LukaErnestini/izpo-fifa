@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid';
 import type { Actions, PageServerLoad } from './$types';
 import aws from 'aws-sdk';
 const { S3 } = aws;
-import { env } from '$env/dynamic/private';
+import { AWS_AK, AWS_SK, BUCKET_NAME } from '$env/static/private';
 
 export const load = (async ({ params }) => {
 	const id = +params.playerId;
@@ -70,11 +70,11 @@ export const actions = {
 				const filename = nanoid() + '.' + ext;
 				const s3 = new S3({
 					region: 'eu-central-1',
-					credentials: { accessKeyId: env.AWS_AK, secretAccessKey: env.AWS_SK }
+					credentials: { accessKeyId: AWS_AK, secretAccessKey: AWS_SK }
 				});
 				await s3
 					.putObject({
-						Bucket: env.BUCKET_NAME,
+						Bucket: BUCKET_NAME,
 						Key: filename,
 						ACL: 'public-read',
 						ContentType: file.type,
