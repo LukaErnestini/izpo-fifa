@@ -82,10 +82,8 @@
 </script>
 
 <form action="?/attempt" method="post" use:enhance={addEvent}>
-	<div class="form-control m-4">
-		<ToggleInput bind:checked={goal} label="Goal" name="goal" />
-		<ToggleInput bind:checked={onTarget} label="On Target" name="onTarget" disabled={goal} />
-		<TimeInput {time} {latestTime} />
+	<div class="form-control m-4 gap-4">
+		<TimeInput {time} />
 		<SelectPlayersInput
 			inputName="shooter"
 			label="Shooter"
@@ -99,6 +97,8 @@
 			bind:selected={assist}
 		/>
 		<HalfSoccerPitchInput bind:x bind:y bind:distance />
+		<ToggleInput bind:checked={goal} label="Goal" name="goal" />
+		<ToggleInput bind:checked={onTarget} label="On Target" name="onTarget" disabled={goal} />
 		<div hidden={!expanded} transition:slide={{ duration: 300, easing: quintOut }}>
 			<div class="divider" />
 			<ToggleInput bind:checked={penalty} label="Penalty" name="penalty" />
