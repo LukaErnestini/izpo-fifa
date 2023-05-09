@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let time = 0;
+	export let time = 1;
 
 	async function changeNum(n: number) {
 		time += n;

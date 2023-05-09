@@ -26,7 +26,7 @@
 	let x: number | null;
 	let y: number | null;
 	let distance: number | null;
-	let time = 0;
+	let time = 1;
 	let shooterTeammates: Player[] = [];
 	let goaliePlayers: Player[] = [];
 	let expanded = false;

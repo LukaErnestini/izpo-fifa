@@ -20,7 +20,7 @@
 	$: if (attempts && attempts.length) {
 		latestTime = attempts[0].time;
 	} else {
-		latestTime = 0;
+		latestTime = 1;
 	}
 
 	interface Data {
