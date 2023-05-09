@@ -1,7 +1,8 @@
 <script lang="ts">
 	import '../app.css';
 	import Icon from '@iconify/svelte';
-	import { afterUpdate, onMount } from 'svelte';
+	import { afterUpdate, beforeUpdate } from 'svelte';
+	import { goto } from '$app/navigation';
 	// import { page } from '$app/stores';
 	// let pathname = $page.url.pathname;
 	// console.log($page.route);
@@ -10,6 +11,14 @@
 		pathname = window.location.pathname.split('/')[1];
 	});
 	let pathname: string;
+
+	// temporary redirect because no authentication/authorization present
+	// redirect page to /stats if not already there
+	// beforeUpdate(() => {
+	// 	if (pathname !== 'stats') {
+	// 		goto('/stats');
+	// 	}
+	// });
 </script>
 
 <svelte:head>
