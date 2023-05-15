@@ -53,6 +53,10 @@
 		goal = true;
 	}
 
+	$: if (shooter) {
+		assist = null;
+	}
+
 	const addEvent: SubmitFunction = (input) => {
 		// Before form submits
 		loading = true;
