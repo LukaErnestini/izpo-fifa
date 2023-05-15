@@ -82,7 +82,7 @@
 </script>
 
 <form action="?/attempt" method="post" use:enhance={addEvent}>
-	<div class="form-control m-4 gap-4">
+	<div class="form-control m-4 gap-6">
 		<TimeInput {time} />
 		<SelectPlayersInput
 			inputName="shooter"
