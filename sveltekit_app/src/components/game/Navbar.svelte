@@ -44,13 +44,13 @@
 		</span>
 	{:else}
 		<div class="grid relative w-full">
-			<a href="/settings/teams/{teamA?.id}" class="normal-case text-xl ml-4">{teamA?.name}</a>
+			<a href="/settings/teams/{teamA?.id}" class="normal-case text-2xl ml-4">{teamA?.name}</a>
 			<span class="justify-self-center">
-				<span class="normal-case text-2xl">{scoreTeamA}</span>
-				<span class="normal-case text-2xl">:</span>
-				<span class="normal-case text-2xl">{scoreTeamB}</span>
+				<span class="normal-case text-4xl">{scoreTeamA}</span>
+				<span class="normal-case text-4xl">:</span>
+				<span class="normal-case text-4xl">{scoreTeamB}</span>
 			</span>
-			<a href="/settings/teams/{teamB?.id}" class="normal-case text-xl justify-self-end mr-4"
+			<a href="/settings/teams/{teamB?.id}" class="normal-case text-2xl justify-self-end mr-4"
 				>{teamB?.name}</a
 			>
 		</div>
@@ -61,5 +61,14 @@
 	div.grid {
 		transition: background 1s ease-in-out;
 		grid-template-columns: repeat(3, 1fr);
+	}
+
+	div.navbar {
+		border-bottom: 1px solid #000;
+	}
+
+	span,
+	a {
+		text-shadow: #fff 1px 0 10px;
 	}
 </style>
