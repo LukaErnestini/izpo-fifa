@@ -40,27 +40,26 @@
 >
 	{#if !gameIsActive}
 		<span class="normal-case text-xl">
-			<p>Game Day</p>
+			<span>Game Day</span>
 		</span>
 	{:else}
-		<div class="flex justify-between w-full relative">
-			<a href="/settings/teams/{teamA?.id}" class="normal-case text-xl">{teamA?.name}</a>
-			<div>
+		<div class="grid relative w-full">
+			<a href="/settings/teams/{teamA?.id}" class="normal-case text-xl ml-4">{teamA?.name}</a>
+			<span class="justify-self-center">
 				<span class="normal-case text-2xl">{scoreTeamA}</span>
 				<span class="normal-case text-2xl">:</span>
 				<span class="normal-case text-2xl">{scoreTeamB}</span>
-			</div>
-			<a href="/settings/teams/{teamB?.id}" class="normal-case text-xl">{teamB?.name}</a>
+			</span>
+			<a href="/settings/teams/{teamB?.id}" class="normal-case text-xl justify-self-end mr-4"
+				>{teamB?.name}</a
+			>
 		</div>
 	{/if}
 </div>
 
 <style>
-	p {
-		display: inline;
-	}
-
-	div.flex {
+	div.grid {
 		transition: background 1s ease-in-out;
+		grid-template-columns: repeat(3, 1fr);
 	}
 </style>
