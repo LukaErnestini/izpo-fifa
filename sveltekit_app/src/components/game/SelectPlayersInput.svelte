@@ -4,7 +4,6 @@
 
 	export let players: Player[];
 	export let inputName: string;
-	export let label: string;
 	export let selected: number | null;
 
 	function toggle(id: number) {

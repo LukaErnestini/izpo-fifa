@@ -88,18 +88,8 @@
 <form action="?/attempt" method="post" use:enhance={addEvent}>
 	<div class="form-control m-4 gap-6">
 		<TimeInput {time} />
-		<SelectPlayersInput
-			inputName="shooter"
-			label="Shooter"
-			players={gamePlayers}
-			bind:selected={shooter}
-		/>
-		<SelectPlayersInput
-			inputName="assisted"
-			label="Assisted By"
-			players={shooterTeammates}
-			bind:selected={assist}
-		/>
+		<SelectPlayersInput inputName="shooter" players={gamePlayers} bind:selected={shooter} />
+		<SelectPlayersInput inputName="assisted" players={shooterTeammates} bind:selected={assist} />
 		<HalfSoccerPitchInput bind:x bind:y bind:distance />
 		<ToggleInput bind:checked={goal} label="Goal" name="goal" />
 		<ToggleInput bind:checked={onTarget} label="On Target" name="onTarget" disabled={goal} />
@@ -107,12 +97,7 @@
 			<div class="divider" />
 			<ToggleInput bind:checked={penalty} label="Penalty" name="penalty" />
 			{#if penalty}
-				<SelectPlayersInput
-					inputName="goalie"
-					label="Goalie"
-					players={goaliePlayers}
-					bind:selected={goalie}
-				/>
+				<SelectPlayersInput inputName="goalie" players={goaliePlayers} bind:selected={goalie} />
 			{/if}
 			<ToggleInput bind:checked={autogoal} label="Own Goal" name="autogoal" />
 			<div class="divider" />
